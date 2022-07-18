@@ -11,7 +11,7 @@ model Cliente {
   CodCliente    Int             @id @default(autoincrement())
   email         String          @unique
   senha         String
-  Saldo         Int
+  Saldo         Decimal
   Ativo_Cliente Ativo_Cliente[]
 }
 
