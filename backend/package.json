@@ -19,6 +19,7 @@
     "sequelize": "^6.21.3"
   },
   "devDependencies": {
+    "eslint": "^8.20.0",
     "sequelize-cli": "^6.4.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
