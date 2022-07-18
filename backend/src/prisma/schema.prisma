@@ -9,6 +9,7 @@ datasource db {
 
 model Cliente {
   CodCliente    Int             @id @default(autoincrement())
+  nome          String
   email         String          @unique
   senha         String
   Saldo         Decimal
@@ -19,6 +20,7 @@ model Ativo {
   CodAtivo      Int             @id @default(autoincrement())
   QtdeAtivo     Int
   Valor         Decimal
+  NomeAtivo     String
   Ativo_Cliente Ativo_Cliente[]
 }
 
