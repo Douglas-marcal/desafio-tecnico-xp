@@ -2,14 +2,15 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
-import { NewClient } from '../interface';
+import { Credentials, NewClient } from '../interface';
 import HttpException from '../shared/http.exception';
+import { generateToken } from './utils/generateToken';
 
 dotenv.config();
 
 const prisma = new PrismaClient();
 
-async function findClientByEmail(email: string) {
+function findClientByEmail(email: string) {
   return prisma.cliente.findUnique({
     where: {
       email,
@@ -36,6 +37,27 @@ async function createClient(credentials: NewClient) {
   });
 }
 
+async function loginClient(credentials: Credentials): Promise<string> {
+  const { email, senha } = credentials;
+
+  const client = await findClientByEmail(email);
+
+  if (!client) throw new HttpException('Cliente não existe', StatusCodes.NOT_FOUND);
+
+  const credentialsAreCorrect = await bcrypt.compare(senha, client.senha);
+
+  const clientCredential = {
+    CodCliente: client.CodCliente,
+    email,
+  };
+
+  if (!credentialsAreCorrect) throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
+
+  return generateToken(clientCredential);
+}
+
 export default {
   createClient,
+  findClientByEmail,
+  loginClient,
 };

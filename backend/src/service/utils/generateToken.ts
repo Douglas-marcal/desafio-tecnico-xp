@@ -4,10 +4,10 @@ import { GenerateToken } from '../../interface';
 
 dotenv.config();
 
-export function generateToken(clientCreated: GenerateToken): string {
+export function generateToken(clientCredential: GenerateToken): string {
   const payload = {
-    CodCliente: clientCreated.CodCliente,
-    email: clientCreated.email,
+    CodCliente: clientCredential.CodCliente,
+    email: clientCredential.email,
   };
 
   const options = {
