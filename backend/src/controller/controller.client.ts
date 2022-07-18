@@ -14,6 +14,15 @@ async function createClient(request: Request, response: Response): Promise<void>
   response.status(StatusCodes.CREATED).json(message);
 }
 
+async function loginClient(request: Request, response: Response): Promise<void> {
+  const { body } = request;
+
+  const token = await clientService.loginClient(body);
+
+  response.status(StatusCodes.OK).json({ token });
+}
+
 export default {
   createClient,
+  loginClient,
 };

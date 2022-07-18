@@ -5,4 +5,6 @@ const router = Router();
 
 router.post('/registrar', clientController.createClient);
 
+router.post('/entrar', clientController.loginClient);
+
 export default router;
