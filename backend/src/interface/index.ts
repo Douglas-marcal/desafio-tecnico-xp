@@ -11,3 +11,8 @@ export interface GenerateToken {
   CodCliente: number;
   email: string
 }
+
+export interface ResponseLogin {
+  token: string;
+  CodCliente: number;
+}
