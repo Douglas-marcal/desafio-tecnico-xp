@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import schemaDeposit from '../schema/schema.deposit';
 
-async function validateDeposit(request: Request, _response: Response, next: NextFunction) {
+async function validateDepositOrDraft(request: Request, _response: Response, next: NextFunction) {
   const { body } = request;
 
   try {
@@ -20,4 +20,4 @@ async function validateDeposit(request: Request, _response: Response, next: Next
   }
 }
 
-export default validateDeposit;
+export default validateDepositOrDraft;
