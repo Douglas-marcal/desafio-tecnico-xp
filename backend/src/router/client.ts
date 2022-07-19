@@ -13,7 +13,7 @@ router.post('/entrar', validateLogin, clientController.clientLogin);
 
 router.post('/deposito', validateToken, validateDepositOrDraft, clientController.deposit);
 
-router.post('/saque', validateToken, validateDepositOrDraft);
+router.post('/saque', validateToken, validateDepositOrDraft, clientController.draft);
 
 router.get('/:codCliente', validateToken, clientController.availableBalance);
 

@@ -54,9 +54,26 @@ async function deposit(request: Request, response: Response): Promise<void> {
   response.status(StatusCodes.OK).json(balanceUpdated);
 }
 
+async function draft(request: Request, response: Response): Promise<void> {
+  const { body } = request;
+  const { client } = response.locals;
+
+  if (Number(body.CodCliente) !== Number(client.CodCliente)) {
+    throw new HttpException(
+      'Não é possível sacar de uma conta diferente da sua.',
+      StatusCodes.FORBIDDEN,
+    );
+  }
+
+  const balanceUpdated = await clientService.draft(body);
+
+  response.status(StatusCodes.OK).json(balanceUpdated);
+}
+
 export default {
   createClient,
   clientLogin,
   availableBalance,
   deposit,
+  draft,
 };
