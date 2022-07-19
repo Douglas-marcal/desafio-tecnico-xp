@@ -11,12 +11,7 @@ async function createClient(request: Request, response: Response): Promise<void>
 
   const clientCreated = await clientService.createClient(body);
 
-  const message = {
-    message: 'Cliente registrado',
-    CodCliente: clientCreated.CodCliente,
-  };
-
-  response.status(StatusCodes.CREATED).json(message);
+  response.status(StatusCodes.CREATED).json(clientCreated);
 }
 
 async function clientLogin(request: Request, response: Response): Promise<void> {
@@ -40,8 +35,17 @@ async function availableBalance(request: Request, response: Response): Promise<v
   response.status(StatusCodes.OK).json(clientBalance);
 }
 
+async function deposit(request: Request, response: Response): Promise<void> {
+  const { body } = request;
+
+  const balanceUpdated = await clientService.deposit(body);
+
+  response.status(StatusCodes.OK).json(balanceUpdated);
+}
+
 export default {
   createClient,
   clientLogin,
   availableBalance,
+  deposit,
 };
