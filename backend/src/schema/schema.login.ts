@@ -8,6 +8,7 @@ const schema = Joi.object({
   'string.email': 'O campo de {#label} deve ser um email válido.',
   'string.empty': 'O campo de {#label} não pode estar vazio.',
   'string.min': 'O campo de {#label} precisa de no mínimo 6 caracteres.',
+  'object.unknown': 'O campo de {#label} não é permitido',
 });
 
 export default schema;
