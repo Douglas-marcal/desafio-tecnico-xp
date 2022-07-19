@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
-import { Credentials, NewClient } from '../interface';
+import { Credentials, NewClient, ResponseLogin } from '../interface';
 import HttpException from '../shared/http.exception';
 import { generateToken } from './utils/generateToken';
 
@@ -37,7 +37,7 @@ async function createClient(credentials: NewClient) {
   });
 }
 
-async function loginClient(credentials: Credentials): Promise<string> {
+async function loginClient(credentials: Credentials): Promise<ResponseLogin> {
   const { email, senha } = credentials;
 
   const client = await findClientByEmail(email);
@@ -53,7 +53,12 @@ async function loginClient(credentials: Credentials): Promise<string> {
 
   if (!credentialsAreCorrect) throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
 
-  return generateToken(clientCredential);
+  const response = {
+    token: generateToken(clientCredential),
+    CodCliente: client.CodCliente,
+  };
+
+  return response;
 }
 
 function availableBalance(CodCliente: number) {
