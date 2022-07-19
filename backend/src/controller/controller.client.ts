@@ -49,7 +49,7 @@ async function deposit(request: Request, response: Response): Promise<void> {
     );
   }
 
-  const balanceUpdated = await clientService.deposit(body);
+  const balanceUpdated = await clientService.depositOrDraft(body, 'deposit');
 
   response.status(StatusCodes.OK).json(balanceUpdated);
 }
@@ -65,7 +65,7 @@ async function draft(request: Request, response: Response): Promise<void> {
     );
   }
 
-  const balanceUpdated = await clientService.draft(body);
+  const balanceUpdated = await clientService.depositOrDraft(body, 'draft');
 
   response.status(StatusCodes.OK).json(balanceUpdated);
 }

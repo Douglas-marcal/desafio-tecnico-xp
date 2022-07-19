@@ -16,6 +16,8 @@ import { generateToken } from './utils/generateToken';
 import clientModel from '../model/model.client';
 import { make } from './utils/handleOperations';
 
+type ActionType = 'deposit' | 'draft';
+
 dotenv.config();
 
 async function createClient(credentials: NewClient) {
@@ -81,37 +83,12 @@ async function availableBalance(codCliente: number) {
   return response;
 }
 
-async function deposit(order: Order): Promise<OrderResponse> {
+async function depositOrDraft(order: Order, action: ActionType): Promise<OrderResponse> {
   const { CodCliente, Valor } = order;
 
   const accountBalance = await availableBalance(CodCliente);
 
-  const SaldoAnterior = accountBalance.Saldo;
-
-  const balanceUpdated = make.deposit(SaldoAnterior, Valor);
-
-  const orderInformation: Order = {
-    ...order,
-    Valor: balanceUpdated,
-  };
-
-  const orderUpdated = await clientModel.depositOrDraft(orderInformation);
-
-  const response = {
-    ...order,
-    SaldoAnterior,
-    SaldoAtual: Number(orderUpdated.Saldo),
-  };
-
-  return response;
-}
-
-async function draft(order: Order): Promise<OrderResponse> {
-  const { CodCliente, Valor } = order;
-
-  const accountBalance = await availableBalance(CodCliente);
-
-  if (accountBalance.Saldo < Valor) {
+  if (action.includes('draft') && (accountBalance.Saldo < Valor)) {
     throw new HttpException(
       'Saldo insuficiente.',
       StatusCodes.FORBIDDEN,
@@ -120,7 +97,7 @@ async function draft(order: Order): Promise<OrderResponse> {
 
   const SaldoAnterior: number = accountBalance.Saldo;
 
-  const balanceUpdated: number = make.draft(SaldoAnterior, Valor);
+  const balanceUpdated: number = make[action](SaldoAnterior, Valor);
 
   const orderInformation: Order = {
     ...order,
@@ -142,6 +119,5 @@ export default {
   createClient,
   clientLogin,
   availableBalance,
-  deposit,
-  draft,
+  depositOrDraft,
 };
