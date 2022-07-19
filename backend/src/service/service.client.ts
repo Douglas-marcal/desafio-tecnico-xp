@@ -2,9 +2,18 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
-import { Credentials, NewClient, ResponseLogin } from '../interface';
+
+import {
+  Credentials,
+  NewClient,
+  Order,
+  ResponseLogin,
+} from '../interface';
+
 import HttpException from '../shared/http.exception';
 import { generateToken } from './utils/generateToken';
+
+import clientModel from '../model/model.client';
 
 dotenv.config();
 
@@ -73,9 +82,20 @@ function availableBalance(CodCliente: number) {
   });
 }
 
+async function deposit(order: Order) {
+  const { CodCliente } = order;
+
+  const accountBalance = await availableBalance(CodCliente);
+
+  if (!accountBalance) throw new HttpException('Cliente não encontrado', StatusCodes.NOT_FOUND);
+
+  return clientModel.deposit(order, Number(accountBalance.Saldo));
+}
+
 export default {
   createClient,
   findClientByEmail,
   clientLogin,
   availableBalance,
+  deposit,
 };
