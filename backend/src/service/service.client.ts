@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
@@ -17,50 +16,49 @@ import clientModel from '../model/model.client';
 
 dotenv.config();
 
-const prisma = new PrismaClient();
-
-function findClientByEmail(email: string) {
-  return prisma.cliente.findUnique({
-    where: {
-      email,
-    },
-  });
-}
-
 async function createClient(credentials: NewClient) {
   const { nome, email, senha } = credentials;
 
-  const clientAlreadyRegistered = await findClientByEmail(email);
+  const clientAlreadyRegistered = await clientModel.findClientByEmail(email);
 
   if (clientAlreadyRegistered) throw new HttpException('Cliente já registrado', StatusCodes.CONFLICT);
 
   const hash = await bcrypt.hash(senha, process.env.SALT_ROUNDS || 10);
 
-  return prisma.cliente.create({
-    data: {
-      nome,
-      email,
-      senha: hash,
-      Saldo: 0,
-    },
-  });
+  const newClientInformation = {
+    nome,
+    email,
+    senha: hash,
+    Saldo: 0,
+  };
+
+  const clientCreated = await clientModel.createClient(newClientInformation);
+
+  const response = {
+    message: 'Cliente registrado',
+    CodCliente: clientCreated.CodCliente,
+    email: clientCreated.email,
+    Saldo: Number(clientCreated.Saldo),
+  };
+
+  return response;
 }
 
 async function clientLogin(credentials: Credentials): Promise<ResponseLogin> {
   const { email, senha } = credentials;
 
-  const client = await findClientByEmail(email);
+  const client = await clientModel.findClientByEmail(email);
 
   if (!client) throw new HttpException('Cliente não existe', StatusCodes.NOT_FOUND);
 
   const credentialsAreCorrect = await bcrypt.compare(senha, client.senha);
 
+  if (!credentialsAreCorrect) throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
+
   const clientCredential = {
     CodCliente: client.CodCliente,
     email,
   };
-
-  if (!credentialsAreCorrect) throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
 
   const response = {
     token: generateToken(clientCredential),
@@ -70,16 +68,15 @@ async function clientLogin(credentials: Credentials): Promise<ResponseLogin> {
   return response;
 }
 
-function availableBalance(CodCliente: number) {
-  return prisma.cliente.findUnique({
-    where: {
-      CodCliente,
-    },
-    select: {
-      CodCliente: true,
-      Saldo: true,
-    },
-  });
+async function availableBalance(codCliente: number) {
+  const accountBalance = await clientModel.availableBalance(codCliente);
+
+  const response = {
+    ...accountBalance,
+    Saldo: Number(accountBalance?.Saldo),
+  };
+
+  return response;
 }
 
 async function deposit(order: Order) {
@@ -94,7 +91,6 @@ async function deposit(order: Order) {
 
 export default {
   createClient,
-  findClientByEmail,
   clientLogin,
   availableBalance,
   deposit,
