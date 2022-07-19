@@ -84,8 +84,6 @@ async function deposit(order: Order) {
 
   const accountBalance = await availableBalance(CodCliente);
 
-  if (!accountBalance) throw new HttpException('Cliente não encontrado', StatusCodes.NOT_FOUND);
-
   return clientModel.deposit(order, Number(accountBalance.Saldo));
 }
 
