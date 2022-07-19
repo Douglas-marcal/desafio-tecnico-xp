@@ -12,14 +12,14 @@ model Cliente {
   nome          String
   email         String          @unique
   senha         String
-  Saldo         Decimal
+  Saldo         Decimal         @db.Decimal(65, 2)
   Ativo_Cliente Ativo_Cliente[]
 }
 
 model Ativo {
   CodAtivo      Int             @id @default(autoincrement())
   QtdeAtivo     Int
-  Valor         Decimal
+  Valor         Decimal         @db.Decimal(65, 2)
   NomeAtivo     String
   Ativo_Cliente Ativo_Cliente[]
 }
