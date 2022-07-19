@@ -23,9 +23,12 @@ export interface Order {
   Valor: number;
 }
 
-export interface ResponseDeposit {
-  Saldo: number;
-  ValorAdicionado: number;
+export interface OrderResponse extends Order {
   SaldoAnterior: number;
-  CodCliente: number;
+  SaldoAtual: number;
+}
+
+export interface Action {
+  deposit: (SaldoAnterior: number, Valor: number) => number
+  draft: (SaldoAnterior: number, Valor: number) => number
 }
