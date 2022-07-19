@@ -1,13 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import assetModel from '../model/model.asset';
 
 function getByAssetCode(assetCode: number) {
-  return prisma.ativo.findUnique({
-    where: {
-      CodAtivo: assetCode,
-    },
-  });
+  return assetModel.getByAssetCode(assetCode);
 }
 
 export default {
