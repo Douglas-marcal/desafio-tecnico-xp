@@ -6,6 +6,7 @@ import {
   Credentials,
   NewClient,
   Order,
+  OrderResponse,
   ResponseLogin,
 } from '../interface';
 
@@ -13,6 +14,7 @@ import HttpException from '../shared/http.exception';
 import { generateToken } from './utils/generateToken';
 
 import clientModel from '../model/model.client';
+import { make } from './utils/handleOperations';
 
 dotenv.config();
 
@@ -79,12 +81,61 @@ async function availableBalance(codCliente: number) {
   return response;
 }
 
-async function deposit(order: Order) {
-  const { CodCliente } = order;
+async function deposit(order: Order): Promise<OrderResponse> {
+  const { CodCliente, Valor } = order;
 
   const accountBalance = await availableBalance(CodCliente);
 
-  return clientModel.deposit(order, Number(accountBalance.Saldo));
+  const SaldoAnterior = accountBalance.Saldo;
+
+  const balanceUpdated = make.deposit(SaldoAnterior, Valor);
+
+  const orderInformation: Order = {
+    ...order,
+    Valor: balanceUpdated,
+  };
+
+  const orderUpdated = await clientModel.depositOrDraft(orderInformation);
+
+  const response = {
+    ...order,
+    SaldoAnterior,
+    SaldoAtual: Number(orderUpdated.Saldo),
+  };
+
+  return response;
+}
+
+async function draft(order: Order): Promise<OrderResponse> {
+  const { CodCliente, Valor } = order;
+
+  const accountBalance = await availableBalance(CodCliente);
+
+  if (accountBalance.Saldo < Valor) {
+    throw new HttpException(
+      'Saldo insuficiente.',
+      StatusCodes.FORBIDDEN,
+    );
+  }
+
+  const SaldoAnterior: number = accountBalance.Saldo;
+
+  const balanceUpdated: number = make.draft(SaldoAnterior, Valor);
+
+  const orderInformation: Order = {
+    ...order,
+    Valor: balanceUpdated,
+  };
+
+  const orderUpdated = await clientModel.depositOrDraft(orderInformation);
+
+  const response = {
+    ...order,
+    SaldoAnterior,
+    SaldoAtual: Number(orderUpdated.Saldo),
+  };
+
+  return response;
 }
 
 export default {
@@ -92,4 +143,5 @@ export default {
   clientLogin,
   availableBalance,
   deposit,
+  draft,
 };
