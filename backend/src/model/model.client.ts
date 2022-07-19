@@ -1,13 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import dotenv from 'dotenv';
 
 import {
   NewClient,
   Order,
-  ResponseDeposit,
 } from '../interface';
-
-dotenv.config();
 
 const prisma = new PrismaClient();
 
@@ -42,35 +38,29 @@ function availableBalance(CodCliente: number) {
   });
 }
 
-async function deposit(order: Order, SaldoAnterior: number): Promise<ResponseDeposit> {
-  const { CodCliente, Valor } = order;
+function depositOrDraft(order: Order) {
+  const {
+    CodCliente,
+    Valor: NovoSaldo,
+  } = order;
 
-  const accountUpdated = await prisma.cliente.update({
+  return prisma.cliente.update({
     where: {
       CodCliente,
     },
     data: {
-      Saldo: Number(SaldoAnterior + Valor),
+      Saldo: NovoSaldo,
     },
     select: {
       CodCliente: true,
       Saldo: true,
     },
   });
-
-  const response = {
-    ...accountUpdated,
-    Saldo: Number(accountUpdated.Saldo),
-    ValorAdicionado: Valor,
-    SaldoAnterior,
-  };
-
-  return response;
 }
 
 export default {
   createClient,
   findClientByEmail,
   availableBalance,
-  deposit,
+  depositOrDraft,
 };
