@@ -56,8 +56,21 @@ async function loginClient(credentials: Credentials): Promise<string> {
   return generateToken(clientCredential);
 }
 
+function availableBalance(CodCliente: number) {
+  return prisma.cliente.findUnique({
+    where: {
+      CodCliente,
+    },
+    select: {
+      CodCliente: true,
+      Saldo: true,
+    },
+  });
+}
+
 export default {
   createClient,
   findClientByEmail,
   loginClient,
+  availableBalance,
 };
