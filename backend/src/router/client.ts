@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/registrar', validateClientRegister, clientController.createClient);
 
-router.post('/entrar', validateLogin, clientController.loginClient);
+router.post('/entrar', validateLogin, clientController.clientLogin);
 
 router.get('/:codCliente', validateToken, clientController.availableBalance);
 

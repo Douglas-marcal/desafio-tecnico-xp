@@ -37,7 +37,7 @@ async function createClient(credentials: NewClient) {
   });
 }
 
-async function loginClient(credentials: Credentials): Promise<ResponseLogin> {
+async function clientLogin(credentials: Credentials): Promise<ResponseLogin> {
   const { email, senha } = credentials;
 
   const client = await findClientByEmail(email);
@@ -76,6 +76,6 @@ function availableBalance(CodCliente: number) {
 export default {
   createClient,
   findClientByEmail,
-  loginClient,
+  clientLogin,
   availableBalance,
 };
