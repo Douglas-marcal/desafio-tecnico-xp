@@ -27,7 +27,10 @@ async function availableBalance(request: Request, response: Response): Promise<v
   const { client } = response.locals;
 
   if (Number(codCliente) !== Number(client.CodCliente)) {
-    throw new HttpException('Não é possível consultar saldo de outro cliente.', StatusCodes.UNAUTHORIZED);
+    throw new HttpException(
+      'Não é possível consultar saldo de outro cliente.',
+      StatusCodes.UNAUTHORIZED,
+    );
   }
 
   const clientBalance = await clientService.availableBalance(Number(codCliente));
@@ -37,6 +40,14 @@ async function availableBalance(request: Request, response: Response): Promise<v
 
 async function deposit(request: Request, response: Response): Promise<void> {
   const { body } = request;
+  const { client } = response.locals;
+
+  if (Number(body.CodCliente) !== Number(client.CodCliente)) {
+    throw new HttpException(
+      'Não é permitido depositar em uma conta diferente da sua.',
+      StatusCodes.UNAUTHORIZED,
+    );
+  }
 
   const balanceUpdated = await clientService.deposit(body);
 

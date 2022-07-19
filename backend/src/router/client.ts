@@ -11,7 +11,7 @@ router.post('/registrar', validateClientRegister, clientController.createClient)
 
 router.post('/entrar', validateLogin, clientController.clientLogin);
 
-router.post('/deposito', validateDeposit, clientController.deposit);
+router.post('/deposito', validateToken, validateDeposit, clientController.deposit);
 
 router.get('/:codCliente', validateToken, clientController.availableBalance);
 
