@@ -9,7 +9,7 @@ async function validateLogin(request: Request, _response: Response, next: NextFu
     await schemaLogin.validateAsync(body);
     next();
   } catch (error: any) {
-    const isRequired = error.message.includes('obrigatório');
+    const isRequired: boolean = error.message.includes('obrigatório');
 
     error.status = isRequired ? StatusCodes.BAD_REQUEST : StatusCodes.UNPROCESSABLE_ENTITY;
 
