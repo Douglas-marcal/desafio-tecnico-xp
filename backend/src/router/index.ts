@@ -6,6 +6,6 @@ const router = Router();
 
 router.use('/ativos', assetRouter);
 
-router.use('/cliente', clientRouter);
+router.use('/conta', clientRouter);
 
 export default router;

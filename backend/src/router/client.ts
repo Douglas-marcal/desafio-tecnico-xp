@@ -9,4 +9,6 @@ router.post('/registrar', validateClientRegister, clientController.createClient)
 
 router.post('/entrar', validateLogin, clientController.loginClient);
 
+router.get('/:codCliente', clientController.availableBalance);
+
 export default router;
