@@ -48,3 +48,10 @@ export interface AssetPurchaseOrder {
   CodAtivo: number;
   QtdeAtivo: number;
 }
+
+export interface AssetInformationToUpdate {
+  updatedClientAsset: number;
+  order: AssetPurchaseOrder;
+  assetName: string;
+  newAssetQuantity: number;
+}
