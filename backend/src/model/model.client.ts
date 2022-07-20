@@ -15,6 +15,14 @@ function findClientByEmail(email: string) {
   });
 }
 
+function findClientById(CodCliente: number) {
+  return prisma.cliente.findUnique({
+    where: {
+      CodCliente,
+    },
+  });
+}
+
 async function createClient(credentials: NewClient) {
   const { Saldo } = credentials;
 
@@ -63,4 +71,5 @@ export default {
   findClientByEmail,
   availableBalance,
   depositOrDraft,
+  findClientById,
 };
