@@ -32,3 +32,9 @@ export interface Action {
   deposit: (SaldoAnterior: number, Valor: number) => number
   draft: (SaldoAnterior: number, Valor: number) => number
 }
+
+export interface Asset {
+  QtdeAtivo: number;
+  Valor: number;
+  NomeAtivo: string;
+}
