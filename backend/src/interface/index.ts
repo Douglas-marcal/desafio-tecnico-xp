@@ -42,3 +42,9 @@ export interface Asset {
 export interface ResponseAsset extends Asset {
   CodAtivo: number;
 }
+
+export interface AssetPurchaseOrder {
+  CodCliente: number;
+  CodAtivo: number;
+  QtdeAtivo: number;
+}
