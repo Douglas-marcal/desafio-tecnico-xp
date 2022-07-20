@@ -17,6 +17,15 @@ async function getByAssetCode(request: Request, response: Response): Promise<voi
   response.status(StatusCodes.OK).json(asset);
 }
 
+async function registerAsset(request: Request, response: Response): Promise<void> {
+  const { body } = request;
+
+  const registeredAsset = await assetService.registerAsset(body);
+
+  response.status(StatusCodes.CREATED).json(registeredAsset);
+}
+
 export default {
   getByAssetCode,
+  registerAsset,
 };
