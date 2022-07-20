@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { Asset } from '../interface';
 
 const prisma = new PrismaClient();
 
@@ -10,6 +11,22 @@ function getByAssetCode(assetCode: number) {
   });
 }
 
+function registerAsset(asset: Asset) {
+  return prisma.ativo.create({
+    data: asset,
+  });
+}
+
+function getByAssetName(assetName: string) {
+  return prisma.ativo.findUnique({
+    where: {
+      NomeAtivo: assetName,
+    },
+  });
+}
+
 export default {
   getByAssetCode,
+  registerAsset,
+  getByAssetName,
 };
