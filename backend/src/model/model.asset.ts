@@ -3,6 +3,10 @@ import { Asset } from '../interface';
 
 const prisma = new PrismaClient();
 
+function getAllAssets() {
+  return prisma.ativo.findMany();
+}
+
 function getByAssetCode(assetCode: number) {
   return prisma.ativo.findUnique({
     where: {
@@ -29,4 +33,5 @@ export default {
   getByAssetCode,
   registerAsset,
   getByAssetName,
+  getAllAssets,
 };
