@@ -3,6 +3,10 @@ import { Asset } from '../interface';
 import assetModel from '../model/model.asset';
 import HttpException from '../shared/http.exception';
 
+function getAllAssets() {
+  return assetModel.getAllAssets();
+}
+
 function getByAssetCode(assetCode: number) {
   return assetModel.getByAssetCode(assetCode);
 }
@@ -29,4 +33,5 @@ async function registerAsset(asset: Asset) {
 export default {
   getByAssetCode,
   registerAsset,
+  getAllAssets,
 };
