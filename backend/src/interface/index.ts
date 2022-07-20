@@ -38,3 +38,7 @@ export interface Asset {
   Valor: number;
   NomeAtivo: string;
 }
+
+export interface ResponseAsset extends Asset {
+  CodAtivo: number;
+}

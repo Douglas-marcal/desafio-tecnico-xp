@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { Asset } from '../interface';
+import { Asset, ResponseAsset } from '../interface';
 import assetModel from '../model/model.asset';
 import HttpException from '../shared/http.exception';
 
@@ -11,7 +11,7 @@ function getByAssetCode(assetCode: number) {
   return assetModel.getByAssetCode(assetCode);
 }
 
-async function registerAsset(asset: Asset) {
+async function registerAsset(asset: Asset): Promise<ResponseAsset> {
   const alreadyExist = await assetModel.getByAssetName(asset.NomeAtivo);
 
   const message = 'Não foi possível criar, já existe um ativo com este nome.';
