@@ -29,9 +29,21 @@ function getByAssetName(assetName: string) {
   });
 }
 
+function updateAsset(CodAtivo: number, QtdeAtivo: number) {
+  return prisma.ativo.update({
+    where: {
+      CodAtivo,
+    },
+    data: {
+      QtdeAtivo,
+    },
+  });
+}
+
 export default {
   getByAssetCode,
   registerAsset,
   getByAssetName,
   getAllAssets,
+  updateAsset,
 };
