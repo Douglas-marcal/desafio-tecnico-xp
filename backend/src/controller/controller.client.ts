@@ -70,10 +70,17 @@ async function draft(request: Request, response: Response): Promise<void> {
   response.status(StatusCodes.OK).json(balanceUpdated);
 }
 
+async function findAllClientAssets(_request: Request, response: Response) {
+  const allAssets = await clientService.findAllClientAssets(1);
+
+  response.status(StatusCodes.OK).json(allAssets);
+}
+
 export default {
   createClient,
   clientLogin,
   availableBalance,
   deposit,
   draft,
+  findAllClientAssets,
 };
