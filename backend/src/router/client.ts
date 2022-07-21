@@ -15,8 +15,8 @@ router.post('/deposito', validateToken, validateDepositOrDraft, clientController
 
 router.post('/saque', validateToken, validateDepositOrDraft, clientController.draft);
 
-router.get('/ativos', clientController.findAllClientAssets);
+router.get('/ativos', validateToken, clientController.findAllClientAssets);
 
-router.get('/:codCliente', validateToken, clientController.availableBalance);
+router.get('/saldo', validateToken, clientController.availableBalance);
 
 export default router;
