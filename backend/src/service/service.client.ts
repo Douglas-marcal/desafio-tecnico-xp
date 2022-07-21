@@ -115,9 +115,30 @@ async function depositOrDraft(order: Order, action: ActionType): Promise<OrderRe
   return response;
 }
 
+async function findAllClientAssets(CodCliente: number) {
+  const allAssets = await clientModel.findAllClientAssets(CodCliente);
+
+  if (allAssets.length === 0) {
+    throw new HttpException('Nenhum ativo encontrado na conta.', StatusCodes.NOT_FOUND);
+  }
+
+  const assetsFormatted = allAssets.map((asset) => {
+    const { ativo, ...assetWithoutAtivo } = asset;
+
+    return {
+      ...assetWithoutAtivo,
+      ...ativo,
+      Valor: Number(ativo.Valor),
+    };
+  });
+
+  return assetsFormatted;
+}
+
 export default {
   createClient,
   clientLogin,
   availableBalance,
   depositOrDraft,
+  findAllClientAssets,
 };
