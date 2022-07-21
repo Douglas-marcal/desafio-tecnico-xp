@@ -22,18 +22,10 @@ async function clientLogin(request: Request, response: Response): Promise<void> 
   response.status(StatusCodes.OK).json(responseLogin);
 }
 
-async function availableBalance(request: Request, response: Response): Promise<void> {
-  const { codCliente } = request.params;
+async function availableBalance(_request: Request, response: Response): Promise<void> {
   const { client } = response.locals;
 
-  if (Number(codCliente) !== Number(client.CodCliente)) {
-    throw new HttpException(
-      'Não é possível consultar saldo de outro cliente.',
-      StatusCodes.UNAUTHORIZED,
-    );
-  }
-
-  const clientBalance = await clientService.availableBalance(Number(codCliente));
+  const clientBalance = await clientService.availableBalance(Number(client.CodCliente));
 
   response.status(StatusCodes.OK).json(clientBalance);
 }
