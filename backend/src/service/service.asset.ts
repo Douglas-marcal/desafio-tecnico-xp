@@ -3,8 +3,15 @@ import { Asset, ResponseAsset } from '../interface';
 import assetModel from '../model/model.asset';
 import HttpException from '../shared/http.exception';
 
-function getAllAssets() {
-  return assetModel.getAllAssets();
+async function getAllAssets() {
+  const assets = await assetModel.getAllAssets();
+
+  const assetsFormatted = assets.map((asset) => ({
+    ...asset,
+    Valor: Number(asset.Valor),
+  }));
+
+  return assetsFormatted;
 }
 
 function getByAssetCode(assetCode: number) {
