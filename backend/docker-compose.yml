@@ -19,18 +19,6 @@ services:
       DATABASE_URL: mysql://root:secret@mysql_desafio_tecnico:3306/investimento
       PRIVATE_KEY: secret_key
 
-  prisma-db-api:
-    stdin_open: true
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: prisma-db-api
-    depends_on:
-      - db
-    ports:
-      - 3001:3001
-    restart: always
-
   db:
     platform: linux/x86_64
     image: mysql:8.0
