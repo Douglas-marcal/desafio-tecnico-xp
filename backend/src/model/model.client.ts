@@ -66,10 +66,27 @@ function depositOrDraft(order: Order) {
   });
 }
 
+function findAllClientAssets(CodCliente: number) {
+  return prisma.ativo_Cliente.findMany({
+    where: {
+      CodCliente,
+    },
+    include: {
+      ativo: {
+        select: {
+          NomeAtivo: true,
+          Valor: true,
+        },
+      },
+    },
+  });
+}
+
 export default {
   createClient,
   findClientByEmail,
   availableBalance,
   depositOrDraft,
   findClientById,
+  findAllClientAssets,
 };
