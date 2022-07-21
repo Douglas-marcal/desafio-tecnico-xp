@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 import { StatusCodes } from 'http-status-codes';
-import { Ativo } from '@prisma/client';
+import { Ativo, Ativo_Cliente } from '@prisma/client';
 import { AssetInformationToUpdate, AssetPurchaseOrder } from '../interface';
 
 import investmentModel from '../model/model.investment';
@@ -11,6 +12,14 @@ import HttpException from '../shared/http.exception';
 function verifyIfThereIsEnoughAsset(asset: Ativo, QtdeAtivo: number): void {
   if (QtdeAtivo > asset.QtdeAtivo) {
     const message = `Não há ativos suficientes para compra. Ativos disponíveis: ${asset.QtdeAtivo}`;
+
+    throw new HttpException(message, StatusCodes.FORBIDDEN);
+  }
+}
+
+function verifyIfThereIsEnoughAssetToSell(asset: Ativo_Cliente, QtdeAtivo: number): void {
+  if (asset.QtdeAtivo < QtdeAtivo) {
+    const message = `Não há ativos suficientes para vender. Seus ativos: ${asset.QtdeAtivo}`;
 
     throw new HttpException(message, StatusCodes.FORBIDDEN);
   }
@@ -30,7 +39,7 @@ async function getAssetIfItExists(CodAtivo: number): Promise<Ativo> {
   return asset;
 }
 
-async function updateExistingAsset(information: AssetInformationToUpdate) {
+async function updateExistingAsset(information: AssetInformationToUpdate, action: string) {
   const {
     updatedClientAsset,
     order,
@@ -45,26 +54,59 @@ async function updateExistingAsset(information: AssetInformationToUpdate) {
 
   const updatedPurchase = await investmentModel.updatePurchase(orderToUpdate);
 
+  const message = action.includes('buy') ? 'Compra realizada com sucesso.' : 'Venda realizada com sucesso.';
+
   const response = {
     ...updatedPurchase,
     NomeAtivo: assetName,
-    message: 'Compra realizada com sucesso.',
+    message,
     QtdeAtivoNaCorretora: newAssetQuantity,
   };
 
   return response;
 }
 
-async function buyAsset(order: AssetPurchaseOrder) {
+const updateAvailableAsset = {
+  buy: (asset: Ativo, QtdeAtivo: number) => {
+    verifyIfThereIsEnoughAsset(asset, QtdeAtivo);
+
+    return asset.QtdeAtivo - QtdeAtivo;
+  },
+  sell: async (asset: Ativo, QtdeAtivo: number, order: AssetPurchaseOrder) => {
+    const { CodAtivo, CodCliente } = order;
+
+    const assetAlreadyPurchased = await investmentModel
+      .verifyAssetAlreadyPurchased(CodCliente, CodAtivo);
+
+    if (!assetAlreadyPurchased) {
+      throw new HttpException('Você não possui este ativo em sua carteira.', StatusCodes.FORBIDDEN);
+    }
+
+    verifyIfThereIsEnoughAssetToSell(assetAlreadyPurchased, QtdeAtivo);
+
+    return asset.QtdeAtivo + QtdeAtivo;
+  },
+};
+
+const updateClientAsset = {
+  buy: (assetAlreadyPurchased: Ativo_Cliente, QtdeAtivo: number) => (
+    assetAlreadyPurchased.QtdeAtivo + QtdeAtivo
+  ),
+  sell: (assetAlreadyPurchased: Ativo_Cliente, QtdeAtivo: number) => (
+    assetAlreadyPurchased.QtdeAtivo - QtdeAtivo
+  ),
+};
+
+type AvailableOperation = 'buy' | 'sell'
+
+async function buyOrSellAsset(order: AssetPurchaseOrder, action: AvailableOperation) {
   const { CodAtivo, CodCliente, QtdeAtivo } = order;
 
   await verifyIfClientExists(CodCliente);
 
   const asset = await getAssetIfItExists(CodAtivo);
 
-  verifyIfThereIsEnoughAsset(asset, QtdeAtivo);
-
-  const newAssetQuantity = asset.QtdeAtivo - QtdeAtivo;
+  const newAssetQuantity: number = await updateAvailableAsset[action](asset, QtdeAtivo, order);
 
   const assetUpdated = await assetModel.updateAsset(CodAtivo, newAssetQuantity);
 
@@ -72,7 +114,7 @@ async function buyAsset(order: AssetPurchaseOrder) {
     .verifyAssetAlreadyPurchased(CodCliente, CodAtivo);
 
   if (assetAlreadyPurchased) {
-    const updatedClientAsset: number = assetAlreadyPurchased.QtdeAtivo + QtdeAtivo;
+    const updatedClientAsset: number = updateClientAsset[action](assetAlreadyPurchased, QtdeAtivo);
     const assetName: string = assetUpdated.NomeAtivo;
 
     const informationToUpdate: AssetInformationToUpdate = {
@@ -82,7 +124,7 @@ async function buyAsset(order: AssetPurchaseOrder) {
       newAssetQuantity,
     };
 
-    return updateExistingAsset(informationToUpdate);
+    return updateExistingAsset(informationToUpdate, action);
   }
 
   const purchasedOrder = await investmentModel.buyNewAsset(order);
@@ -98,5 +140,5 @@ async function buyAsset(order: AssetPurchaseOrder) {
 }
 
 export default {
-  buyAsset,
+  buyOrSellAsset,
 };
