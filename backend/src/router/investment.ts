@@ -5,6 +5,6 @@ const router = Router();
 
 router.post('/comprar', investmentController.buyAsset);
 
-router.post('/vender');
+router.post('/vender', investmentController.sellAsset);
 
 export default router;
