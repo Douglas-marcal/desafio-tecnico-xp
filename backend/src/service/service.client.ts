@@ -122,15 +122,17 @@ async function findAllClientAssets(CodCliente: number) {
     throw new HttpException('Nenhum ativo encontrado na conta.', StatusCodes.NOT_FOUND);
   }
 
-  const assetsFormatted = allAssets.map((asset) => {
-    const { ativo, ...assetWithoutAtivo } = asset;
+  const assetsFormatted = allAssets
+    .filter((asset) => asset.QtdeAtivo > 0)
+    .map((asset) => {
+      const { ativo, ...assetWithoutAtivo } = asset;
 
-    return {
-      ...assetWithoutAtivo,
-      ...ativo,
-      Valor: Number(ativo.Valor),
-    };
-  });
+      return {
+        ...assetWithoutAtivo,
+        ...ativo,
+        Valor: Number(ativo.Valor),
+      };
+    });
 
   return assetsFormatted;
 }
