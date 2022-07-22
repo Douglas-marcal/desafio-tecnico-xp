@@ -17,7 +17,7 @@ describe('Tests client model', () => {
       investmentModel = new InvestmentModel(context);
     });
 
-    describe('call function buyNewAsset', () => {
+    describe('call method buyNewAsset', () => {
       it('should return asset purchased', async () => {
         mockContext
           .prisma
@@ -34,7 +34,7 @@ describe('Tests client model', () => {
       });
     });
 
-    describe('call function verifyAssetAlreadyPurchased', () => {
+    describe('call method verifyAssetAlreadyPurchased', () => {
       it('should return an asset that has already been purchased', async () => {
         mockContext
           .prisma
@@ -68,7 +68,7 @@ describe('Tests client model', () => {
       });
     });
 
-    describe('call function updatePurchase', () => {
+    describe('call method updatePurchase', () => {
       it('should return an asset updated', async () => {
         mockContext
           .prisma

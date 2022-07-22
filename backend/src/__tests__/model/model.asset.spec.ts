@@ -19,7 +19,7 @@ describe('Tests asset model', () => {
       assetModel = new AssetModel(context);
     });
 
-    describe('call function getAllAssets', () => {
+    describe('call method getAllAssets', () => {
       it('should return all assets', async () => {
         mockContext.prisma.ativo.findMany.mockResolvedValue(allAssetsMock);
 
@@ -29,7 +29,7 @@ describe('Tests asset model', () => {
       });
     });
 
-    describe('call function getByAssetCode', () => {
+    describe('call method getByAssetCode', () => {
       it('should return an asset', async () => {
         mockContext.prisma.ativo.findUnique.mockResolvedValue(byAssetCodeMock);
 
@@ -47,7 +47,7 @@ describe('Tests asset model', () => {
       });
     });
 
-    describe('call function registerAsset', () => {
+    describe('call method registerAsset', () => {
       it('should return an object with a property "CodAtivo"', async () => {
         mockContext.prisma.ativo.create.mockResolvedValue(registerAssetMock.output);
 
@@ -58,7 +58,7 @@ describe('Tests asset model', () => {
       });
     });
 
-    describe('call function getByAssetName', () => {
+    describe('call method getByAssetName', () => {
       it('should return an object', async () => {
         mockContext.prisma.ativo.findUnique.mockResolvedValue(byAssetNameMock);
 
@@ -77,7 +77,7 @@ describe('Tests asset model', () => {
       });
     });
 
-    describe('call function updateAsset', () => {
+    describe('call method updateAsset', () => {
       it('should return an object', async () => {
         mockContext.prisma.ativo.update.mockResolvedValue(updateAssetMock);
 

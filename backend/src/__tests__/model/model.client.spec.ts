@@ -19,7 +19,7 @@ describe('Tests client model', () => {
       clientModel = new ClientModel(context);
     });
 
-    describe('call function findClientByEmail', () => {
+    describe('call method findClientByEmail', () => {
       it('should return a client by email', async () => {
         mockContext.prisma.cliente.findUnique.mockResolvedValue(findUniqueClientMock);
 
@@ -38,7 +38,7 @@ describe('Tests client model', () => {
       });
     });
 
-    describe('call function findClientById', () => {
+    describe('call method findClientById', () => {
       it('should return a client by Id', async () => {
         mockContext.prisma.cliente.findUnique.mockResolvedValue(findUniqueClientMock);
 
@@ -57,7 +57,7 @@ describe('Tests client model', () => {
       });
     });
 
-    describe('call function createClient', () => {
+    describe('call method createClient', () => {
       it('should return an object with property "CodCliente"', async () => {
         mockContext.prisma.cliente.create.mockResolvedValue(createClientMock.output);
 
@@ -69,7 +69,7 @@ describe('Tests client model', () => {
       });
     });
 
-    describe('call function availableBalance', () => {
+    describe('call method availableBalance', () => {
       it('should return available balance', async () => {
         mockContext.prisma.cliente.findUnique.mockResolvedValue(clientBalanceMock);
 
@@ -95,7 +95,7 @@ describe('Tests client model', () => {
       });
     });
 
-    describe('call function depositOrDraft', () => {
+    describe('call method depositOrDraft', () => {
       it('should return available balance', async () => {
         mockContext.prisma.cliente.update.mockResolvedValue(depositOrDraftMock);
 
