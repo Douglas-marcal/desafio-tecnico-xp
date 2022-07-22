@@ -2,11 +2,17 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
 
+import { Cliente } from '@prisma/client';
 import {
+  AccountBalance,
+  ClientAssetsFormatted,
   Credentials,
+  GenerateToken,
   NewClient,
   Order,
   OrderResponse,
+  RegisteredClient,
+  ResponseAccountBalance,
   ResponseLogin,
 } from '../interface';
 
@@ -20,16 +26,18 @@ type ActionType = 'deposit' | 'draft';
 
 dotenv.config();
 
-const clientModel = new ClientModel();
+export const clientModel = new ClientModel();
 
-async function createClient(credentials: NewClient) {
+async function createClient(credentials: NewClient): Promise<RegisteredClient> {
   const { nome, email, senha } = credentials;
 
-  const clientAlreadyRegistered = await clientModel.findClientByEmail(email);
+  const clientAlreadyRegistered: Cliente | null = await clientModel.findClientByEmail(email);
 
-  if (clientAlreadyRegistered) throw new HttpException('Cliente já registrado', StatusCodes.CONFLICT);
+  if (clientAlreadyRegistered) {
+    throw new HttpException('Cliente já registrado', StatusCodes.CONFLICT);
+  }
 
-  const hash = await bcrypt.hash(senha, process.env.SALT_ROUNDS || 10);
+  const hash: string = await bcrypt.hash(senha, process.env.SALT_ROUNDS || 10);
 
   const newClientInformation = {
     nome,
@@ -38,9 +46,9 @@ async function createClient(credentials: NewClient) {
     Saldo: 0,
   };
 
-  const clientCreated = await clientModel.createClient(newClientInformation);
+  const clientCreated: Cliente = await clientModel.createClient(newClientInformation);
 
-  const response = {
+  const response: RegisteredClient = {
     message: 'Cliente registrado',
     CodCliente: clientCreated.CodCliente,
     email: clientCreated.email,
@@ -53,20 +61,24 @@ async function createClient(credentials: NewClient) {
 async function clientLogin(credentials: Credentials): Promise<ResponseLogin> {
   const { email, senha } = credentials;
 
-  const client = await clientModel.findClientByEmail(email);
+  const client: Cliente | null = await clientModel.findClientByEmail(email);
 
-  if (!client) throw new HttpException('Cliente não existe', StatusCodes.NOT_FOUND);
+  if (!client) {
+    throw new HttpException('Cliente não existe', StatusCodes.NOT_FOUND);
+  }
 
-  const credentialsAreCorrect = await bcrypt.compare(senha, client.senha);
+  const credentialsAreCorrect: boolean = await bcrypt.compare(senha, client.senha);
 
-  if (!credentialsAreCorrect) throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
+  if (!credentialsAreCorrect) {
+    throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
+  }
 
-  const clientCredential = {
+  const clientCredential: GenerateToken = {
     CodCliente: client.CodCliente,
     email,
   };
 
-  const response = {
+  const response: ResponseLogin = {
     token: generateToken(clientCredential),
     CodCliente: client.CodCliente,
   };
@@ -74,12 +86,16 @@ async function clientLogin(credentials: Credentials): Promise<ResponseLogin> {
   return response;
 }
 
-async function availableBalance(codCliente: number) {
-  const accountBalance = await clientModel.availableBalance(codCliente);
+async function availableBalance(codCliente: number): Promise<ResponseAccountBalance> {
+  const accountBalance: AccountBalance | null = await clientModel.availableBalance(codCliente);
 
-  const response = {
+  if (!accountBalance) {
+    throw new HttpException('Saldo indisponível.', StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
+  const response: ResponseAccountBalance = {
     ...accountBalance,
-    Saldo: Number(accountBalance?.Saldo),
+    Saldo: Number(accountBalance.Saldo),
   };
 
   return response;
@@ -88,7 +104,7 @@ async function availableBalance(codCliente: number) {
 async function depositOrDraft(order: Order, action: ActionType): Promise<OrderResponse> {
   const { CodCliente, Valor } = order;
 
-  const accountBalance = await availableBalance(CodCliente);
+  const accountBalance: ResponseAccountBalance = await availableBalance(CodCliente);
 
   if (action.includes('draft') && (accountBalance.Saldo < Valor)) {
     throw new HttpException(
@@ -106,9 +122,9 @@ async function depositOrDraft(order: Order, action: ActionType): Promise<OrderRe
     Valor: balanceUpdated,
   };
 
-  const orderUpdated = await clientModel.depositOrDraft(orderInformation);
+  const orderUpdated: AccountBalance = await clientModel.depositOrDraft(orderInformation);
 
-  const response = {
+  const response: OrderResponse = {
     ...order,
     SaldoAnterior,
     SaldoAtual: Number(orderUpdated.Saldo),
@@ -117,14 +133,14 @@ async function depositOrDraft(order: Order, action: ActionType): Promise<OrderRe
   return response;
 }
 
-async function findAllClientAssets(CodCliente: number) {
+async function findAllClientAssets(CodCliente: number): Promise<Array<ClientAssetsFormatted>> {
   const allAssets = await clientModel.findAllClientAssets(CodCliente);
 
   if (allAssets.length === 0) {
     throw new HttpException('Nenhum ativo encontrado na conta.', StatusCodes.NOT_FOUND);
   }
 
-  const assetsFormatted = allAssets
+  const assetsFormatted: Array<ClientAssetsFormatted> = allAssets
     .filter((asset) => asset.QtdeAtivo > 0)
     .map((asset) => {
       const { ativo, ...assetWithoutAtivo } = asset;

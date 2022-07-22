@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 export interface Credentials {
   email: string;
   senha: string;
@@ -54,4 +56,29 @@ export interface AssetInformationToUpdate {
   order: AssetPurchaseOrder;
   assetName: string;
   newAssetQuantity: number;
+}
+
+export interface RegisteredClient {
+  message: string;
+  CodCliente: number;
+  email: string;
+  Saldo: number,
+}
+
+export interface AccountBalance {
+  Saldo: Prisma.Decimal;
+  CodCliente: number;
+}
+
+export interface ResponseAccountBalance {
+  Saldo: number;
+  CodCliente: number;
+}
+
+export interface ClientAssetsFormatted {
+  Valor: number;
+  NomeAtivo: string;
+  CodCliente: number;
+  CodAtivo: number;
+  QtdeAtivo: number;
 }
