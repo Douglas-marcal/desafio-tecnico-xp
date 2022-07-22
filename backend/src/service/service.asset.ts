@@ -4,7 +4,7 @@ import { Asset, ResponseAsset } from '../interface';
 import AssetModel from '../model/model.asset';
 import HttpException from '../shared/http.exception';
 
-const assetModel = new AssetModel();
+export const assetModel = new AssetModel();
 
 async function getAllAssets(): Promise<Array<ResponseAsset>> {
   const assets: Array<Ativo> = await assetModel.getAllAssets();
