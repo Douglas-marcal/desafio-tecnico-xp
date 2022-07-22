@@ -1,5 +1,5 @@
 import { Ativo, Prisma } from '@prisma/client';
-import { Asset, ResponseAsset } from '../../../interface';
+import { Asset, ResponseAsset } from '../../../../interface';
 
 const input: Asset = {
   NomeAtivo: 'TESTING',

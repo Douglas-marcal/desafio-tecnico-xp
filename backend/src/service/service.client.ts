@@ -34,12 +34,12 @@ async function createClient(credentials: NewClient): Promise<RegisteredClient> {
   const clientAlreadyRegistered: Cliente | null = await clientModel.findClientByEmail(email);
 
   if (clientAlreadyRegistered) {
-    throw new HttpException('Cliente já registrado', StatusCodes.CONFLICT);
+    throw new HttpException('Cliente já registrado.', StatusCodes.CONFLICT);
   }
 
   const hash: string = await bcrypt.hash(senha, process.env.SALT_ROUNDS || 10);
 
-  const newClientInformation = {
+  const newClientInformation: NewClient = {
     nome,
     email,
     senha: hash,
@@ -49,7 +49,7 @@ async function createClient(credentials: NewClient): Promise<RegisteredClient> {
   const clientCreated: Cliente = await clientModel.createClient(newClientInformation);
 
   const response: RegisteredClient = {
-    message: 'Cliente registrado',
+    message: 'Cliente registrado.',
     CodCliente: clientCreated.CodCliente,
     email: clientCreated.email,
     Saldo: Number(clientCreated.Saldo),

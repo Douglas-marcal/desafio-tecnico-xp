@@ -1,5 +1,5 @@
 import { Ativo, Prisma } from '@prisma/client';
-import { ResponseAsset } from '../../../interface';
+import { ResponseAsset } from '../../../../interface';
 
 const input: Array<Ativo> = [
   {

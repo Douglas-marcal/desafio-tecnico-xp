@@ -3,9 +3,9 @@ import { StatusCodes } from 'http-status-codes';
 import { ResponseAsset } from '../../interface';
 import assetService, { assetModel } from '../../service/service.asset';
 
-import allAssetsMock from './mock/allAssets';
-import uniqueAssetMock from './mock/uniqueAsset';
-import registerAssetMock from './mock/registerAsset';
+import allAssetsMock from './mock/asset/allAssets';
+import uniqueAssetMock from './mock/asset/uniqueAsset';
+import registerAssetMock from './mock/asset/registerAsset';
 
 describe('Tests asset service', () => {
   describe('when asset service', () => {
