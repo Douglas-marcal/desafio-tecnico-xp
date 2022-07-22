@@ -1,13 +1,20 @@
 /* eslint-disable camelcase */
 import { StatusCodes } from 'http-status-codes';
-import { Ativo, Ativo_Cliente } from '@prisma/client';
+import { Ativo, Ativo_Cliente, PrismaClient } from '@prisma/client';
 import { AssetInformationToUpdate, AssetPurchaseOrder } from '../interface';
 
 import investmentModel from '../model/model.investment';
-import assetModel from '../model/model.asset';
+import AssetModel from '../model/model.asset';
 import clientModel from '../model/model.client';
 
 import HttpException from '../shared/http.exception';
+import { Context } from '../model/context';
+
+const Context: Context = {
+  prisma: new PrismaClient(),
+};
+
+const assetModel = new AssetModel(Context);
 
 function verifyIfThereIsEnoughAsset(asset: Ativo, QtdeAtivo: number): void {
   if (QtdeAtivo > asset.QtdeAtivo) {

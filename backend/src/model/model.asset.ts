@@ -1,49 +1,49 @@
-import { PrismaClient } from '@prisma/client';
 import { Asset } from '../interface';
+import { Context } from './context';
 
-const prisma = new PrismaClient();
+class AssetModel {
+  static context: Context;
 
-function getAllAssets() {
-  return prisma.ativo.findMany();
+  constructor(context: Context) {
+    AssetModel.context = context;
+  }
+
+  public getAllAssets() {
+    return AssetModel.context.prisma.ativo.findMany();
+  }
+
+  public getByAssetCode(assetCode: number) {
+    return AssetModel.context.prisma.ativo.findUnique({
+      where: {
+        CodAtivo: assetCode,
+      },
+    });
+  }
+
+  public registerAsset(asset: Asset) {
+    return AssetModel.context.prisma.ativo.create({
+      data: asset,
+    });
+  }
+
+  public getByAssetName(assetName: string) {
+    return AssetModel.context.prisma.ativo.findUnique({
+      where: {
+        NomeAtivo: assetName,
+      },
+    });
+  }
+
+  public updateAsset(CodAtivo: number, QtdeAtivo: number) {
+    return AssetModel.context.prisma.ativo.update({
+      where: {
+        CodAtivo,
+      },
+      data: {
+        QtdeAtivo,
+      },
+    });
+  }
 }
 
-function getByAssetCode(assetCode: number) {
-  return prisma.ativo.findUnique({
-    where: {
-      CodAtivo: assetCode,
-    },
-  });
-}
-
-function registerAsset(asset: Asset) {
-  return prisma.ativo.create({
-    data: asset,
-  });
-}
-
-function getByAssetName(assetName: string) {
-  return prisma.ativo.findUnique({
-    where: {
-      NomeAtivo: assetName,
-    },
-  });
-}
-
-function updateAsset(CodAtivo: number, QtdeAtivo: number) {
-  return prisma.ativo.update({
-    where: {
-      CodAtivo,
-    },
-    data: {
-      QtdeAtivo,
-    },
-  });
-}
-
-export default {
-  getByAssetCode,
-  registerAsset,
-  getByAssetName,
-  getAllAssets,
-  updateAsset,
-};
+export default AssetModel;
