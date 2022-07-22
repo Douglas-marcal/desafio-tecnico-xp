@@ -1,43 +1,45 @@
-import { PrismaClient } from '@prisma/client';
 import { AssetPurchaseOrder } from '../interface';
+import { Context, prismaContext } from './context';
 
-const prisma = new PrismaClient();
+class InvestmentModel {
+  static context: Context;
 
-function buyNewAsset(asset: AssetPurchaseOrder) {
-  return prisma.ativo_Cliente.create({
-    data: asset,
-  });
-}
+  constructor(context: Context = prismaContext) {
+    InvestmentModel.context = context;
+  }
 
-function verifyAssetAlreadyPurchased(CodCliente: number, CodAtivo: number) {
-  return prisma.ativo_Cliente.findUnique({
-    where: {
-      CodCliente_CodAtivo: {
-        CodCliente,
-        CodAtivo,
+  public buyNewAsset(asset: AssetPurchaseOrder) {
+    return InvestmentModel.context.prisma.ativo_Cliente.create({
+      data: asset,
+    });
+  }
+
+  public verifyAssetAlreadyPurchased(CodCliente: number, CodAtivo: number) {
+    return InvestmentModel.context.prisma.ativo_Cliente.findUnique({
+      where: {
+        CodCliente_CodAtivo: {
+          CodCliente,
+          CodAtivo,
+        },
       },
-    },
-  });
-}
+    });
+  }
 
-function updatePurchase(order: AssetPurchaseOrder) {
-  const { CodAtivo, CodCliente, QtdeAtivo } = order;
+  public updatePurchase(order: AssetPurchaseOrder) {
+    const { CodAtivo, CodCliente, QtdeAtivo } = order;
 
-  return prisma.ativo_Cliente.update({
-    where: {
-      CodCliente_CodAtivo: {
-        CodCliente,
-        CodAtivo,
+    return InvestmentModel.context.prisma.ativo_Cliente.update({
+      where: {
+        CodCliente_CodAtivo: {
+          CodCliente,
+          CodAtivo,
+        },
       },
-    },
-    data: {
-      QtdeAtivo,
-    },
-  });
+      data: {
+        QtdeAtivo,
+      },
+    });
+  }
 }
 
-export default {
-  buyNewAsset,
-  verifyAssetAlreadyPurchased,
-  updatePurchase,
-};
+export default InvestmentModel;
