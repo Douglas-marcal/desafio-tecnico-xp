@@ -1,15 +1,9 @@
-import { PrismaClient } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import { Asset, ResponseAsset } from '../interface';
-import { Context } from '../model/context';
 import AssetModel from '../model/model.asset';
 import HttpException from '../shared/http.exception';
 
-const Context: Context = {
-  prisma: new PrismaClient(),
-};
-
-const assetModel = new AssetModel(Context);
+const assetModel = new AssetModel();
 
 async function getAllAssets() {
   const assets = await assetModel.getAllAssets();
