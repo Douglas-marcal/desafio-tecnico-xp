@@ -64,13 +64,13 @@ async function clientLogin(credentials: Credentials): Promise<ResponseLogin> {
   const client: Cliente | null = await clientModel.findClientByEmail(email);
 
   if (!client) {
-    throw new HttpException('Cliente não existe', StatusCodes.NOT_FOUND);
+    throw new HttpException('Cliente não existe.', StatusCodes.NOT_FOUND);
   }
 
   const credentialsAreCorrect: boolean = await bcrypt.compare(senha, client.senha);
 
   if (!credentialsAreCorrect) {
-    throw new HttpException('Email ou senha inválidos', StatusCodes.UNAUTHORIZED);
+    throw new HttpException('Email ou senha inválidos.', StatusCodes.FORBIDDEN);
   }
 
   const clientCredential: GenerateToken = {
