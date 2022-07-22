@@ -4,89 +4,93 @@ import {
   NewClient,
   Order,
 } from '../interface';
+import { Context } from './context';
 
-const prisma = new PrismaClient();
+const prismaContext = {
+  prisma: new PrismaClient(),
+};
 
-function findClientByEmail(email: string) {
-  return prisma.cliente.findUnique({
-    where: {
-      email,
-    },
-  });
-}
+class ClientModel {
+  static context: Context;
 
-function findClientById(CodCliente: number) {
-  return prisma.cliente.findUnique({
-    where: {
+  constructor(context: Context = prismaContext) {
+    ClientModel.context = context;
+  }
+
+  public findClientByEmail(email: string) {
+    return ClientModel.context.prisma.cliente.findUnique({
+      where: {
+        email,
+      },
+    });
+  }
+
+  public findClientById(CodCliente: number) {
+    return ClientModel.context.prisma.cliente.findUnique({
+      where: {
+        CodCliente,
+      },
+    });
+  }
+
+  public async createClient(credentials: NewClient) {
+    const { Saldo } = credentials;
+
+    return ClientModel.context.prisma.cliente.create({
+      data: {
+        ...credentials,
+        Saldo: <number>Saldo,
+      },
+    });
+  }
+
+  public availableBalance(CodCliente: number) {
+    return ClientModel.context.prisma.cliente.findUnique({
+      where: {
+        CodCliente,
+      },
+      select: {
+        CodCliente: true,
+        Saldo: true,
+      },
+    });
+  }
+
+  public depositOrDraft(order: Order) {
+    const {
       CodCliente,
-    },
-  });
-}
+      Valor: NovoSaldo,
+    } = order;
 
-async function createClient(credentials: NewClient) {
-  const { Saldo } = credentials;
+    return ClientModel.context.prisma.cliente.update({
+      where: {
+        CodCliente,
+      },
+      data: {
+        Saldo: NovoSaldo,
+      },
+      select: {
+        CodCliente: true,
+        Saldo: true,
+      },
+    });
+  }
 
-  return prisma.cliente.create({
-    data: {
-      ...credentials,
-      Saldo: <number>Saldo,
-    },
-  });
-}
-
-function availableBalance(CodCliente: number) {
-  return prisma.cliente.findUnique({
-    where: {
-      CodCliente,
-    },
-    select: {
-      CodCliente: true,
-      Saldo: true,
-    },
-  });
-}
-
-function depositOrDraft(order: Order) {
-  const {
-    CodCliente,
-    Valor: NovoSaldo,
-  } = order;
-
-  return prisma.cliente.update({
-    where: {
-      CodCliente,
-    },
-    data: {
-      Saldo: NovoSaldo,
-    },
-    select: {
-      CodCliente: true,
-      Saldo: true,
-    },
-  });
-}
-
-function findAllClientAssets(CodCliente: number) {
-  return prisma.ativo_Cliente.findMany({
-    where: {
-      CodCliente,
-    },
-    include: {
-      ativo: {
-        select: {
-          NomeAtivo: true,
-          Valor: true,
+  public findAllClientAssets(CodCliente: number) {
+    return ClientModel.context.prisma.ativo_Cliente.findMany({
+      where: {
+        CodCliente,
+      },
+      include: {
+        ativo: {
+          select: {
+            NomeAtivo: true,
+            Valor: true,
+          },
         },
       },
-    },
-  });
+    });
+  }
 }
 
-export default {
-  createClient,
-  findClientByEmail,
-  availableBalance,
-  depositOrDraft,
-  findClientById,
-  findAllClientAssets,
-};
+export default ClientModel;

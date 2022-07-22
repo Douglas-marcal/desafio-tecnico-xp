@@ -5,7 +5,7 @@ import { AssetInformationToUpdate, AssetPurchaseOrder } from '../interface';
 
 import investmentModel from '../model/model.investment';
 import AssetModel from '../model/model.asset';
-import clientModel from '../model/model.client';
+import ClientModel from '../model/model.client';
 
 import HttpException from '../shared/http.exception';
 import { Context } from '../model/context';
@@ -15,6 +15,7 @@ const Context: Context = {
 };
 
 const assetModel = new AssetModel(Context);
+const clientModel = new ClientModel();
 
 function verifyIfThereIsEnoughAsset(asset: Ativo, QtdeAtivo: number): void {
   if (QtdeAtivo > asset.QtdeAtivo) {

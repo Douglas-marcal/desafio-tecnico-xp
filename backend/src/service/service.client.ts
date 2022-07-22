@@ -13,12 +13,14 @@ import {
 import HttpException from '../shared/http.exception';
 import { generateToken } from './utils/generateToken';
 
-import clientModel from '../model/model.client';
+import ClientModel from '../model/model.client';
 import { make } from './utils/handleOperations';
 
 type ActionType = 'deposit' | 'draft';
 
 dotenv.config();
+
+const clientModel = new ClientModel();
 
 async function createClient(credentials: NewClient) {
   const { nome, email, senha } = credentials;
