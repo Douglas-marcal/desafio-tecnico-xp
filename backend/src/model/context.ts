@@ -5,6 +5,10 @@ export type Context = {
   prisma: PrismaClient
 }
 
+export const prismaContext: Context = {
+  prisma: new PrismaClient(),
+};
+
 export type MockContext = {
   prisma: DeepMockProxy<PrismaClient>
 }

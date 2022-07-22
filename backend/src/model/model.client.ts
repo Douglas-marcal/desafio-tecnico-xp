@@ -1,14 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-
-import {
-  NewClient,
-  Order,
-} from '../interface';
-import { Context } from './context';
-
-const prismaContext = {
-  prisma: new PrismaClient(),
-};
+import { NewClient, Order } from '../interface';
+import { Context, prismaContext } from './context';
 
 class ClientModel {
   static context: Context;

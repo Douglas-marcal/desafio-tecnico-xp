@@ -1,10 +1,10 @@
 import { Asset } from '../interface';
-import { Context } from './context';
+import { Context, prismaContext } from './context';
 
 class AssetModel {
   static context: Context;
 
-  constructor(context: Context) {
+  constructor(context: Context = prismaContext) {
     AssetModel.context = context;
   }
 
