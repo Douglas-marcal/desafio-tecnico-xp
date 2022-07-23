@@ -82,3 +82,12 @@ export interface ClientAssetsFormatted {
   CodAtivo: number;
   QtdeAtivo: number;
 }
+
+export interface AssetPurchased {
+  NomeAtivo: string;
+  message: string;
+  QtdeAtivoNaCorretora: number;
+  CodCliente: number;
+  CodAtivo: number;
+  QtdeAtivo: number;
+}
