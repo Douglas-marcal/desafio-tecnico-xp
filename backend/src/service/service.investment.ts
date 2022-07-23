@@ -1,6 +1,5 @@
-/* eslint-disable camelcase */
 import { StatusCodes } from 'http-status-codes';
-import { Ativo, Ativo_Cliente } from '@prisma/client';
+import { Ativo, Ativo_Cliente, Cliente } from '@prisma/client';
 import { AssetInformationToUpdate, AssetPurchaseOrder } from '../interface';
 
 import InvestmentModel from '../model/model.investment';
@@ -9,9 +8,9 @@ import ClientModel from '../model/model.client';
 
 import HttpException from '../shared/http.exception';
 
-const assetModel = new AssetModel();
-const clientModel = new ClientModel();
-const investmentModel = new InvestmentModel();
+export const assetModel = new AssetModel();
+export const clientModel = new ClientModel();
+export const investmentModel = new InvestmentModel();
 
 function verifyIfThereIsEnoughAsset(asset: Ativo, QtdeAtivo: number): void {
   if (QtdeAtivo > asset.QtdeAtivo) {
@@ -30,13 +29,13 @@ function verifyIfThereIsEnoughAssetToSell(asset: Ativo_Cliente, QtdeAtivo: numbe
 }
 
 async function verifyIfClientExists(CodCliente: number): Promise<void> {
-  const client = await clientModel.findClientById(CodCliente);
+  const client: Cliente | null = await clientModel.findClientById(CodCliente);
 
   if (!client) throw new HttpException('Cliente não encontrado.', StatusCodes.NOT_FOUND);
 }
 
 async function getAssetIfItExists(CodAtivo: number): Promise<Ativo> {
-  const asset = await assetModel.getByAssetCode(CodAtivo);
+  const asset: Ativo | null = await assetModel.getByAssetCode(CodAtivo);
 
   if (!asset) throw new HttpException('Ativo não encontrado.', StatusCodes.NOT_FOUND);
 
@@ -79,7 +78,7 @@ const updateAvailableAsset = {
   sell: async (asset: Ativo, QtdeAtivo: number, order: AssetPurchaseOrder) => {
     const { CodAtivo, CodCliente } = order;
 
-    const assetAlreadyPurchased = await investmentModel
+    const assetAlreadyPurchased: Ativo_Cliente | null = await investmentModel
       .verifyAssetAlreadyPurchased(CodCliente, CodAtivo);
 
     if (!assetAlreadyPurchased) {
@@ -108,13 +107,13 @@ async function buyOrSellAsset(order: AssetPurchaseOrder, action: AvailableOperat
 
   await verifyIfClientExists(CodCliente);
 
-  const asset = await getAssetIfItExists(CodAtivo);
+  const asset: Ativo = await getAssetIfItExists(CodAtivo);
 
   const newAssetQuantity: number = await updateAvailableAsset[action](asset, QtdeAtivo, order);
 
-  const assetUpdated = await assetModel.updateAsset(CodAtivo, newAssetQuantity);
+  const assetUpdated: Ativo = await assetModel.updateAsset(CodAtivo, newAssetQuantity);
 
-  const assetAlreadyPurchased = await investmentModel
+  const assetAlreadyPurchased: Ativo_Cliente | null = await investmentModel
     .verifyAssetAlreadyPurchased(CodCliente, CodAtivo);
 
   if (assetAlreadyPurchased) {
@@ -131,7 +130,7 @@ async function buyOrSellAsset(order: AssetPurchaseOrder, action: AvailableOperat
     return updateExistingAsset(informationToUpdate, action);
   }
 
-  const purchasedOrder = await investmentModel.buyNewAsset(order);
+  const purchasedOrder: Ativo_Cliente = await investmentModel.buyNewAsset(order);
 
   const response = {
     ...purchasedOrder,
