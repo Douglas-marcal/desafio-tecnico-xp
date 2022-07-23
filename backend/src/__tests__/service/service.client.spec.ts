@@ -6,6 +6,7 @@ import createClientMock from './mock/client/createClient';
 import loginMock from './mock/client/login';
 import balanceMock from './mock/client/availableBalance';
 import depositOrDraftMock from './mock/client/depositOrDraft';
+import clientAssetsMock from './mock/client/clientAssets';
 
 import { ResponseAccountBalance } from '../../interface';
 
@@ -139,6 +140,32 @@ describe('Tests client service', () => {
 
           expect(error.status).toBe(StatusCodes.FORBIDDEN);
         }
+      });
+    });
+
+    describe('call function findAllClientAssets', () => {
+      it('should throw an exception when client doesn\'t have assets', async () => {
+        jest
+          .spyOn(clientModel, 'findAllClientAssets')
+          .mockResolvedValue([]);
+
+        try {
+          await clientService.findAllClientAssets(697);
+        } catch (error: any) {
+          expect(error.message).toBe('Nenhum ativo encontrado na conta.');
+          expect(error.status).toBe(StatusCodes.NOT_FOUND);
+        }
+      });
+
+      it('should return client assets', async () => {
+        jest
+          .spyOn(clientModel, 'findAllClientAssets')
+          .mockResolvedValue(clientAssetsMock.clientAssets);
+
+        const clientAssets = await clientService.findAllClientAssets(697);
+
+        expect(clientAssets).toHaveLength(2);
+        expect(clientAssets).toEqual(clientAssetsMock.output);
       });
     });
   });
