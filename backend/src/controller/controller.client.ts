@@ -2,14 +2,19 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import dotenv from 'dotenv';
 import clientService from '../service/service.client';
-import HttpException from '../shared/http.exception';
+
+import {
+  ClientAssetsFormatted,
+  Order,
+  OrderResponse, RegisteredClient, ResponseAccountBalance, ResponseLogin,
+} from '../interface';
 
 dotenv.config();
 
 async function createClient(request: Request, response: Response): Promise<void> {
   const { body } = request;
 
-  const clientCreated = await clientService.createClient(body);
+  const clientCreated: RegisteredClient = await clientService.createClient(body);
 
   response.status(StatusCodes.CREATED).json(clientCreated);
 }
@@ -17,53 +22,53 @@ async function createClient(request: Request, response: Response): Promise<void>
 async function clientLogin(request: Request, response: Response): Promise<void> {
   const { body } = request;
 
-  const responseLogin = await clientService.clientLogin(body);
+  const responseLogin: ResponseLogin = await clientService.clientLogin(body);
 
   response.status(StatusCodes.OK).json(responseLogin);
 }
 
 async function availableBalance(_request: Request, response: Response): Promise<void> {
-  const { client } = response.locals;
+  const { CodCliente } = response.locals.client;
 
-  const clientBalance = await clientService.availableBalance(Number(client.CodCliente));
+  const clientBalance: ResponseAccountBalance = await clientService
+    .availableBalance(Number(CodCliente));
 
   response.status(StatusCodes.OK).json(clientBalance);
 }
 
 async function deposit(request: Request, response: Response): Promise<void> {
   const { body } = request;
-  const { client } = response.locals;
+  const { CodCliente } = response.locals.client;
 
-  if (Number(body.CodCliente) !== Number(client.CodCliente)) {
-    throw new HttpException(
-      'Não é permitido depositar em uma conta diferente da sua.',
-      StatusCodes.UNAUTHORIZED,
-    );
-  }
+  const order: Order = {
+    ...body,
+    CodCliente,
+  };
 
-  const balanceUpdated = await clientService.depositOrDraft(body, 'deposit');
+  const balanceUpdated: OrderResponse = await clientService.depositOrDraft(order, 'deposit');
 
   response.status(StatusCodes.OK).json(balanceUpdated);
 }
 
 async function draft(request: Request, response: Response): Promise<void> {
   const { body } = request;
-  const { client } = response.locals;
+  const { CodCliente } = response.locals.client;
 
-  if (Number(body.CodCliente) !== Number(client.CodCliente)) {
-    throw new HttpException(
-      'Não é possível sacar de uma conta diferente da sua.',
-      StatusCodes.FORBIDDEN,
-    );
-  }
+  const order: Order = {
+    ...body,
+    CodCliente,
+  };
 
-  const balanceUpdated = await clientService.depositOrDraft(body, 'draft');
+  const balanceUpdated: OrderResponse = await clientService.depositOrDraft(order, 'draft');
 
   response.status(StatusCodes.OK).json(balanceUpdated);
 }
 
-async function findAllClientAssets(_request: Request, response: Response) {
-  const allAssets = await clientService.findAllClientAssets(1);
+async function findAllClientAssets(_request: Request, response: Response): Promise<void> {
+  const { CodCliente } = response.locals.client;
+
+  const allAssets: Array<ClientAssetsFormatted> = await clientService
+    .findAllClientAssets(Number(CodCliente));
 
   response.status(StatusCodes.OK).json(allAssets);
 }
