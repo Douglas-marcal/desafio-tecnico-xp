@@ -1,38 +1,34 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { AssetPurchased } from '../interface';
 import investmentService from '../service/service.investment';
-import HttpException from '../shared/http.exception';
 
-async function buyAsset(request: Request, response: Response) {
+async function buyAsset(request: Request, response: Response): Promise<void> {
   const { body } = request;
 
-  const { client } = response.locals;
+  const { CodCliente } = response.locals.client;
 
-  if (Number(body.CodCliente) !== Number(client.CodCliente)) {
-    throw new HttpException(
-      'Não é possível comprar ativo para outro cliente.',
-      StatusCodes.UNAUTHORIZED,
-    );
-  }
+  const order = {
+    ...body,
+    CodCliente,
+  };
 
-  const assetPurchased = await investmentService.buyOrSellAsset(body, 'buy');
+  const assetPurchased: AssetPurchased = await investmentService.buyOrSellAsset(order, 'buy');
 
   response.status(StatusCodes.OK).json(assetPurchased);
 }
 
-async function sellAsset(request: Request, response: Response) {
+async function sellAsset(request: Request, response: Response): Promise<void> {
   const { body } = request;
 
-  const { client } = response.locals;
+  const { CodCliente } = response.locals.client;
 
-  if (Number(body.CodCliente) !== Number(client.CodCliente)) {
-    throw new HttpException(
-      'Não é possível vender ativo de outro cliente.',
-      StatusCodes.UNAUTHORIZED,
-    );
-  }
+  const order = {
+    ...body,
+    CodCliente,
+  };
 
-  const assetSold = await investmentService.buyOrSellAsset(body, 'sell');
+  const assetSold: AssetPurchased = await investmentService.buyOrSellAsset(order, 'sell');
 
   response.status(StatusCodes.OK).json(assetSold);
 }
