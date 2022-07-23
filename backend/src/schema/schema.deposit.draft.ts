@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 const schema = Joi.object({
-  CodCliente: Joi.number().greater(0).integer().required(),
   Valor: Joi.number().greater(0).precision(2).required(),
 }).messages({
   'number.greater': 'O campo de {#label} precisa ser maior do que 0.',

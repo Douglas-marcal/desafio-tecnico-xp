@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import schemaDeposit from '../schema/schema.deposit';
+import schemaDeposit from '../schema/schema.deposit.draft';
 
 async function validateDepositOrDraft(request: Request, _response: Response, next: NextFunction) {
   const { body } = request;
