@@ -1,4 +1,3 @@
-import { Ativo } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseAsset } from '../../interface';
 import assetService, { assetModel } from '../../service/service.asset';
@@ -24,20 +23,23 @@ describe('Tests asset service', () => {
 
     describe('call function getByAssetCode', () => {
       it('should return an asset', async () => {
-        jest.spyOn(assetModel, 'getByAssetCode').mockResolvedValue(uniqueAssetMock);
+        jest.spyOn(assetModel, 'getByAssetCode').mockResolvedValue(uniqueAssetMock.input);
 
-        const asset: Ativo | null = await assetService.getByAssetCode(4);
+        const asset: ResponseAsset = await assetService.getByAssetCode(4);
 
         expect(asset).not.toBeNull();
-        expect(asset).toEqual(uniqueAssetMock);
+        expect(asset).toEqual(uniqueAssetMock.output);
       });
 
-      it('should return null when no asset is found', async () => {
+      it('should throw exception when no asset is found', async () => {
         jest.spyOn(assetModel, 'getByAssetCode').mockResolvedValue(null);
 
-        const asset: Ativo | null = await assetService.getByAssetCode(404);
-
-        expect(asset).toBeNull();
+        try {
+          await assetService.getByAssetCode(404);
+        } catch (error: any) {
+          expect(error.message).toBe('Ativo não encontrado.');
+          expect(error.status).toBe(StatusCodes.NOT_FOUND);
+        }
       });
     });
 
