@@ -7,6 +7,8 @@ import { generateToken } from '../../service/utils/generateToken';
 import assetService from '../../service/service.asset';
 
 import allAssetsMock from './mock/asset/allAssets';
+import registerAssetMock from './mock/asset/registerAsset';
+import assetMock from './mock/asset/uniqueAsset';
 
 describe('Tests asset routes', () => {
   describe('when asset routes', () => {
@@ -23,7 +25,7 @@ describe('Tests asset routes', () => {
           .set('Authorization', token)
           .expect(StatusCodes.OK)
           .then((response) => {
-            expect(JSON.parse(response.text)).toEqual(allAssetsMock);
+            expect(response.body).toEqual(allAssetsMock);
             done();
           });
       });
@@ -33,7 +35,7 @@ describe('Tests asset routes', () => {
           .get('/ativos')
           .expect(StatusCodes.UNAUTHORIZED)
           .then((response) => {
-            expect(JSON.parse(response.text)).toHaveProperty('message', 'Token não encontrado.');
+            expect(response.body).toHaveProperty('message', 'Token não encontrado.');
             done();
           });
       });
@@ -44,7 +46,58 @@ describe('Tests asset routes', () => {
           .expect(StatusCodes.UNAUTHORIZED)
           .set('Authorization', 'token')
           .then((response) => {
-            expect(JSON.parse(response.text)).toHaveProperty('message', 'Token inválido.');
+            expect(response.body).toHaveProperty('message', 'Token inválido.');
+            done();
+          });
+      });
+    });
+
+    describe('call /ativos/registrar', () => {
+      jest
+        .spyOn(assetService, 'registerAsset')
+        .mockResolvedValue(registerAssetMock);
+
+      it('should register an asset', (done) => {
+        request(app)
+          .post('/ativos/registrar')
+          .send({
+            QtdeAtivo: 40,
+            NomeAtivo: 'TEST',
+            Valor: 6.97,
+          })
+          .set('Accept', 'application/json')
+          .expect(StatusCodes.CREATED)
+          .then((response) => {
+            expect(response.body).toEqual(registerAssetMock);
+
+            done();
+          });
+      });
+    });
+
+    describe('call /ativos/:codAtivo', () => {
+      jest
+        .spyOn(assetService, 'getByAssetCode')
+        .mockResolvedValue(assetMock);
+
+      it('should get an asset', (done) => {
+        request(app)
+          .get('/ativos/4')
+          .expect(StatusCodes.OK)
+          .then((response) => {
+            expect(response.body).toEqual(assetMock);
+
+            done();
+          });
+      });
+
+      it('should get an asset', (done) => {
+        request(app)
+          .get('/ativos/string')
+          .expect(StatusCodes.NOT_FOUND)
+          .then((response) => {
+            expect(response.body).toHaveProperty('message', 'Rota não encontrada.');
+
             done();
           });
       });
