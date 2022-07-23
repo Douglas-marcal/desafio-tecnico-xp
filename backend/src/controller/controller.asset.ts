@@ -1,4 +1,3 @@
-import { Ativo } from '@prisma/client';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseAsset } from '../interface';
@@ -18,9 +17,7 @@ async function getByAssetCode(request: Request, response: Response): Promise<voi
     throw new HttpException('Rota não encontrada.', StatusCodes.NOT_FOUND);
   }
 
-  const asset: Ativo | null = await assetService.getByAssetCode(Number(codAtivo));
-
-  if (!asset) throw new HttpException('Ativo não encontrado.', StatusCodes.NOT_FOUND);
+  const asset: ResponseAsset = await assetService.getByAssetCode(Number(codAtivo));
 
   response.status(StatusCodes.OK).json(asset);
 }
