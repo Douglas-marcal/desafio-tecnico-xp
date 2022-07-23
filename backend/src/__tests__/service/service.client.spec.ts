@@ -4,6 +4,10 @@ import clientService, { clientModel } from '../../service/service.client';
 
 import createClientMock from './mock/client/createClient';
 import loginMock from './mock/client/login';
+import balanceMock from './mock/client/availableBalance';
+import depositOrDraftMock from './mock/client/depositOrDraft';
+
+import { ResponseAccountBalance } from '../../interface';
 
 describe('Tests client service', () => {
   describe('when client service', () => {
@@ -76,6 +80,62 @@ describe('Tests client service', () => {
           await clientService.clientLogin(loginMock.wrongCredential);
         } catch (error: any) {
           expect(error.message).toBe('Email ou senha inválidos.');
+
+          expect(error.status).toBe(StatusCodes.FORBIDDEN);
+        }
+      });
+    });
+
+    describe('call function availableBalance', () => {
+      it('should return client account balance', async () => {
+        jest
+          .spyOn(clientModel, 'availableBalance')
+          .mockResolvedValue(balanceMock.accountBalance);
+
+        const availableBalance: ResponseAccountBalance = await clientService.availableBalance(9);
+
+        expect(availableBalance).toEqual(balanceMock.responseAccountBalance);
+      });
+
+      it('should throw an exception if internal server error', async () => {
+        jest
+          .spyOn(clientModel, 'availableBalance')
+          .mockResolvedValue(null);
+
+        try {
+          await clientService.availableBalance(6);
+        } catch (error: any) {
+          expect(error.message).toBe('Saldo indisponível.');
+
+          expect(error.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+      });
+    });
+
+    describe('call function depositOrDraft', () => {
+      it('should return report about deposit', async () => {
+        jest
+          .spyOn(clientModel, 'availableBalance')
+          .mockResolvedValue(depositOrDraftMock.responseAccountBalance);
+
+        jest
+          .spyOn(clientModel, 'depositOrDraft')
+          .mockResolvedValue(depositOrDraftMock.orderUpdated);
+
+        const orderResponse = await clientService.depositOrDraft(depositOrDraftMock.deposit, 'deposit');
+
+        expect(orderResponse).toEqual(depositOrDraftMock.orderResponse);
+      });
+
+      it('should throw an exception "Saldo insuficiente."', async () => {
+        jest
+          .spyOn(clientModel, 'availableBalance')
+          .mockResolvedValue(depositOrDraftMock.responseAccountBalance);
+
+        try {
+          await clientService.depositOrDraft(depositOrDraftMock.draft, 'draft');
+        } catch (error: any) {
+          expect(error.message).toBe('Saldo insuficiente.');
 
           expect(error.status).toBe(StatusCodes.FORBIDDEN);
         }
