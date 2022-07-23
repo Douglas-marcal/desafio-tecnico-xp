@@ -17,8 +17,17 @@ async function getAllAssets(): Promise<Array<ResponseAsset>> {
   return assetsFormatted;
 }
 
-function getByAssetCode(assetCode: number): Promise<Ativo | null> {
-  return assetModel.getByAssetCode(assetCode);
+async function getByAssetCode(assetCode: number): Promise<ResponseAsset> {
+  const asset: Ativo | null = await assetModel.getByAssetCode(assetCode);
+
+  if (!asset) throw new HttpException('Ativo não encontrado.', StatusCodes.NOT_FOUND);
+
+  const assetFormatted: ResponseAsset = {
+    ...asset,
+    Valor: Number(asset.Valor),
+  };
+
+  return assetFormatted;
 }
 
 async function registerAsset(asset: Asset): Promise<ResponseAsset> {
