@@ -16,7 +16,7 @@ export function generateToken(clientCredential: GenerateToken): string {
 
   const PRIVATE_KEY = <string>process.env.PRIVATE_KEY;
 
-  const token = jwt.sign(payload, PRIVATE_KEY, options);
+  const token = jwt.sign(payload, PRIVATE_KEY || 'secret_key', options);
 
   return token;
 }
