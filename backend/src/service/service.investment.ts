@@ -55,7 +55,7 @@ async function updateExistingAsset(information: AssetInformationToUpdate, action
     QtdeAtivo: updatedClientAsset,
   };
 
-  const updatedPurchase = await investmentModel.updatePurchase(orderToUpdate);
+  const updatedPurchase: Ativo_Cliente = await investmentModel.updatePurchase(orderToUpdate);
 
   const message = action.includes('buy') ? 'Compra realizada com sucesso.' : 'Venda realizada com sucesso.';
 
@@ -100,7 +100,7 @@ const updateClientAsset = {
   ),
 };
 
-type AvailableOperation = 'buy' | 'sell'
+type AvailableOperation = 'buy' | 'sell';
 
 async function buyOrSellAsset(order: AssetPurchaseOrder, action: AvailableOperation) {
   const { CodAtivo, CodCliente, QtdeAtivo } = order;

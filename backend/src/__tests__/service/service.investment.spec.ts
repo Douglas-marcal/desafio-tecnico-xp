@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import investmentService, { assetModel, clientModel, investmentModel } from '../../service/service.investment';
 
 import buyAssetMock from './mock/investment/buyAssetMock';
+import sellAssetMock from './mock/investment/sellAssetMock';
 
 describe('Tests client service', () => {
   describe('when client service', () => {
@@ -78,6 +79,77 @@ describe('Tests client service', () => {
           const response = await investmentService.buyOrSellAsset(buyAssetMock.buyOrder, 'buy');
 
           expect(response).toHaveProperty('message', 'Compra realizada com sucesso.');
+        });
+      });
+
+      describe('to sell an asset', () => {
+        it('should throw an exception if client doesn\'t have asset', async () => {
+          jest
+            .spyOn(clientModel, 'findClientById')
+            .mockResolvedValue(sellAssetMock.client);
+
+          jest
+            .spyOn(assetModel, 'getByAssetCode')
+            .mockResolvedValue(sellAssetMock.assetFound);
+
+          jest
+            .spyOn(investmentModel, 'verifyAssetAlreadyPurchased')
+            .mockResolvedValue(null);
+
+          try {
+            await investmentService.buyOrSellAsset(sellAssetMock.order, 'sell');
+          } catch (error: any) {
+            expect(error.message).toMatch(/Você não possui este ativo/i);
+            expect(error.status).toBe(StatusCodes.FORBIDDEN);
+          }
+        });
+
+        it('should throw an exception if client doesn\'t have asset enough to sell', async () => {
+          jest
+            .spyOn(clientModel, 'findClientById')
+            .mockResolvedValue(sellAssetMock.client);
+
+          jest
+            .spyOn(assetModel, 'getByAssetCode')
+            .mockResolvedValue(sellAssetMock.assetFound);
+
+          jest
+            .spyOn(investmentModel, 'verifyAssetAlreadyPurchased')
+            .mockResolvedValue(sellAssetMock.assetPurchased);
+
+          try {
+            await investmentService.buyOrSellAsset(sellAssetMock.order, 'sell');
+          } catch (error: any) {
+            expect(error.message).toMatch(/Não há ativos suficientes para vender/i);
+            expect(error.status).toBe(StatusCodes.FORBIDDEN);
+          }
+        });
+
+        it('should sell an asset', async () => {
+          jest
+            .spyOn(clientModel, 'findClientById')
+            .mockResolvedValue(sellAssetMock.client);
+
+          jest
+            .spyOn(assetModel, 'getByAssetCode')
+            .mockResolvedValue(sellAssetMock.assetFound);
+
+          jest
+            .spyOn(investmentModel, 'verifyAssetAlreadyPurchased')
+            .mockResolvedValue(sellAssetMock.assetPurchased);
+
+          jest
+            .spyOn(assetModel, 'updateAsset')
+            .mockResolvedValue(sellAssetMock.assetUpdated);
+
+          jest
+            .spyOn(investmentModel, 'updatePurchase')
+            .mockResolvedValue(sellAssetMock.updatedAssetSold);
+
+          const response = await investmentService.buyOrSellAsset(sellAssetMock.sellOrder, 'sell');
+
+          expect(response).toHaveProperty('message', 'Venda realizada com sucesso.');
+          expect(response).toHaveProperty('QtdeAtivo', 4);
         });
       });
     });
