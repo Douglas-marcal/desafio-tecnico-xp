@@ -11,13 +11,13 @@ function validateToken(request: Request, response: Response, next: NextFunction)
   try {
     const PRIVATE_KEY = <string>process.env.PRIVATE_KEY;
 
-    const clientDecoded = jwt.verify(authorization, PRIVATE_KEY);
+    const clientDecoded = jwt.verify(authorization, PRIVATE_KEY || 'secret_key');
 
     response.locals.client = clientDecoded;
 
     next();
   } catch (error: any) {
-    error.message = 'Token inválido';
+    error.message = 'Token inválido.';
 
     error.status = StatusCodes.UNAUTHORIZED;
 
