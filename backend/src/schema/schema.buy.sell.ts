@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 const schema = Joi.object({
-  CodCliente: Joi.number().greater(0).integer().required(),
   CodAtivo: Joi.number().greater(0).integer().required(),
   QtdeAtivo: Joi.number().greater(0).integer().required(),
 }).messages({
