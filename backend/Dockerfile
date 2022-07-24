@@ -14,6 +14,5 @@ RUN yarn migrate:deploy && tsc
 
 RUN prisma migrate deploy
 
-ENTRYPOINT [ "npm" ]
+COPY . /app
 
-CMD [ "run", "start" ]
