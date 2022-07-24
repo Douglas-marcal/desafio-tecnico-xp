@@ -16,18 +16,19 @@ services:
       - 3333:3333
     environment:
       PORT: 3333
-      DATABASE_URL: mysql://root:secret@mysql_desafio_tecnico:3306/investimento
+      DATABASE_URL: postgresql://root:root@db_desafio_tecnico:5432/investimento
       PRIVATE_KEY: secret_key
 
   db:
     platform: linux/x86_64
-    image: mysql:8.0
-    hostname: mysql_desafio_tecnico
+    image: postgres:13
+    hostname: db_desafio_tecnico
     container_name: desafio_tecnico_xp_db
     environment:
-      MYSQL_ROOT_PASSWORD: secret
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
     ports:
-      - 3306:3306
+      - 5432:5432
 
 networks:
   default:
