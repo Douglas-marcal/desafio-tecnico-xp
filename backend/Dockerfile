@@ -14,4 +14,4 @@ COPY . .
 
 ENTRYPOINT [ "npm" ]
 
-CMD [ "run", "build" ]
+CMD [ "run", "start" ]
