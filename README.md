@@ -11,6 +11,7 @@
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Tomadas de decisão](#tomadas-de-decisão)
 - [Desafios enfrentados](#desafios-enfrentados)
+- [Endpoints da aplicação](#endpoints-da-aplicação)
 - [Como rodar a aplicação](#como-rodar-a-aplicação)
 
 <h2>Sobre o projeto</h2>
@@ -47,6 +48,10 @@ funcionalidades de conta digital.
 <h2>Tomadas de decisão</h2>
 
 Durante o planejamento do projeto, escolhi utilizar NodeJS com TypeScript para dar segurança ao desenvolver o código por causa das tipagens. O banco de dados inicial foi utilizado o MySQL e posteriormente foi migrado para PostgreSQL para tentar realizar o deploy da aplicação, sem sucesso até o momento. Comecei usando Sequelize como ORM e decidi alterar para o Prisma ORM por conta de que sua documentação é detalhada e específica para TypeScript. Utilizei Jest para os testes unitários e Docker para containerizar a aplicação. A biblioteca `bcrypt` foi utilizada para criptografar a senha e a biblioteca `JWT` para fazer autenticação. O projeto está com a arquiterura MSC(Model-Service-Controller) para separar as responsabilidades de cada camada.
+
+- Modelagem do Banco de Dados
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180662270-da3e793a-64a9-41cf-aae9-9769beba355d.png" /></p>
 
 <h2>Desafios enfrentados</h2>
 
@@ -143,6 +148,10 @@ Para subir um servidor Node:
 - `npm run dev`
 
 </details>
+
+### Para rodar os testes unitários utilize o comando:
+
+- `npm test`
 
 #### Com o servidor rodando, para usar a aplicação você precisará do [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/) para fazer requisições HTTP
 
