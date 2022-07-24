@@ -69,7 +69,7 @@ Pelo terminal, clone este repositório com o comando:
 
 Entre no diretório `desafio-xp` e logo em seguida no diretório `backend`:
 
-- `cd desafio-xp/backend`
+- `cd desafio-tecnico-xp/backend`
 
 Instale as dependências:
 
@@ -99,7 +99,7 @@ Pelo terminal, clone este repositório com o comando:
 
 Entre no diretório `desafio-xp` e logo em seguida no diretório `backend`:
 
-- `cd desafio-xp/backend`
+- `cd desafio-tecnico-xp/backend`
 
 Suba o container com o comando:
 
