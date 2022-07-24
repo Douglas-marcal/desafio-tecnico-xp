@@ -8,6 +8,8 @@ COPY prisma ./prisma/
 
 RUN npm install
 
+RUN npm run build
+
 COPY . .
 
 ENTRYPOINT [ "npm" ]
