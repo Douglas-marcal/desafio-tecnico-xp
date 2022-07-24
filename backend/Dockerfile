@@ -8,10 +8,10 @@ COPY prisma ./prisma/
 
 RUN npm install
 
-COPY . ./app
+COPY . .
 
 RUN npm run build
 
-ENTRYPOINT [ "npm" ]
+WORKDIR /dist
 
-CMD [ "start" ]
+CMD node server.js
