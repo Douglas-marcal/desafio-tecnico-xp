@@ -11,6 +11,7 @@
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Tomadas de decisão](#tomadas-de-decisão)
 - [Desafios enfrentados](#desafios-enfrentados)
+- [Como rodar a aplicação](#como-rodar-a-aplicação)
 
 <h2>Sobre o projeto</h2>
 
@@ -53,20 +54,22 @@ Os momentos mais desafiadores foram implementar o Docker na aplicação, realiza
 
 <h2>Como rodar a aplicação</h2>
 
-<h3>Sem docker</h3>
+<details>
+
+<summary>Sem docker</summary>
 
 <h4>Pré-requistos:</h4>
 
 - Node instalado
 - Servidor PostgreSQL rodando
 
-No terminal, clone este repositório com o comando:
+Pelo terminal, clone este repositório com o comando:
 
 - `git clone git@github.com:Douglas-marcal/desafio-tecnico-xp.git`
 
-Entre no diretório `backend`:
+Entre no diretório `desafio-xp` e logo em seguida no diretório `backend`:
 
-- `cd backend`
+- `cd desafio-xp/backend`
 
 Instale as dependências:
 
@@ -80,4 +83,43 @@ Para subir um servidor Node:
 
 - `npm run dev`
 
-<h3>Com Docker</h3>
+</details>
+
+<details>
+
+<summary>Com Docker</summary>
+
+<h4>Pré-requistos:</h4>
+
+- Docker
+
+Pelo terminal, clone este repositório com o comando:
+
+- `git clone git@github.com:Douglas-marcal/desafio-tecnico-xp.git`
+
+Entre no diretório `desafio-xp` e logo em seguida no diretório `backend`:
+
+- `cd desafio-xp/backend`
+
+Suba o container com o comando:
+
+- `docker-compose up -d`
+
+Acesse o terminal do container com o comando:
+
+- `docker exec -it desafio_tecnico_xp bash`
+
+Dentro do container instale as dependências:
+
+- `npm install`
+
+Para subir a tabela e popular alguns ativos pré-definidos no banco de dados:
+
+- `npx prisma migrate dev`
+
+Para subir um servidor Node:
+
+- `npm run dev`
+
+</details>
+
