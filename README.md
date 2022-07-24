@@ -20,14 +20,16 @@ funcionalidades de conta digital.
 
 <h2>Tecnologias utilizadas</h2>
 
-- [TypeScript](https://www.typescriptlang.org/) <img width="20" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" />
+- [TypeScript](https://www.typescriptlang.org/) <img width="30" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" />
 
-- [NodeJS](https://nodejs.org/en/) <img width="20" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" />
+- [NodeJS](https://nodejs.org/en/) <img width="30" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" />
 
 - [Express](https://expressjs.com/)
 
-- [Jest](https://jestjs.io/) <img width="20" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" />
+- [Jest](https://jestjs.io/) <img width="30" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" />
 
-- [PostgreSQL](https://www.postgresql.org/) <img width="20" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-plain-wordmark.svg" />
+- [PostgreSQL](https://www.postgresql.org/) <img width="30" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-plain-wordmark.svg" />
 
 - [Prisma ORM](https://www.prisma.io/)
+
+- [Docker](https://www.docker.com/) <img width="30" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" />
