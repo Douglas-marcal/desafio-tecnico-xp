@@ -1,17 +1,14 @@
-FROM node:16
+FROM node:alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json .
 
-COPY prisma ./prisma/
-
-RUN npm install
+RUN npm install\
+    && npm install typescript -g
 
 COPY . .
 
-RUN npm run build
+RUN tsc
 
-WORKDIR /dist
-
-CMD node server.js
+CMD ["node", "./dist/server.js"]
