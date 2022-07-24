@@ -10,6 +10,8 @@ RUN npm install
 
 COPY . .
 
+RUN npm run build
+
 ENTRYPOINT [ "npm" ]
 
-CMD [ "run", "dev" ]
+CMD [ "run", "start" ]
