@@ -1,0 +1,21 @@
+{
+  "name": "desafio-xp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "heroku-prebuild": "cd backend && npm install && npm run build",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Douglas-marcal/desafio-tecnico-xp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Douglas-marcal/desafio-tecnico-xp/issues"
+  },
+  "homepage": "https://github.com/Douglas-marcal/desafio-tecnico-xp#readme"
+}
