@@ -52,6 +52,26 @@ Durante o planejamento do projeto, escolhi utilizar NodeJS com TypeScript para d
 
 Os momentos mais desafiadores foram implementar o Docker na aplicação, realizar os testes unitários e fazer o deploy da aplicação. O deploy foi o único desafio não superado, houve várias tentativas, mas todas sem sucesso.
 
+## Endpoints da aplicação
+
+| Método          | Endpoint                 |
+|:---------------:|:------------------------:|
+| `POST`          | `/conta/registrar`       |
+| `POST`          | `/conta/entrar`          |
+| `POST`          | `/conta/deposito`        |
+| `POST`          | `/conta/saque`           |
+| `GET`           | `/conta/ativos`          |
+| `GET`           | `/conta/saldo`           |
+| `GET`           | `/ativos`                |
+| `GET`           | `/ativos/:CodAtivo`      |
+| `POST`          | `/ativos/registrar`      |
+| `POST`          | `/investimentos/comprar` |
+| `POST`          | `/investimentos/vender`
+
+
+
+
+
 <h2>Como rodar a aplicação</h2>
 
 <details>
