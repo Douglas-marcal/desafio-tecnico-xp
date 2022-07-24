@@ -10,9 +10,7 @@ RUN npm install
 
 COPY . .
 
-RUN yarn migrate:deploy && tsc
-
-RUN prisma migrate deploy
+RUN npx prisma migrate deploy && tsc
 
 COPY . /app
 
