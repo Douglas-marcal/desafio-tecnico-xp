@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Douglas-marcal/desafio-tecnico-xp/issues"
   },
-  "homepage": "https://github.com/Douglas-marcal/desafio-tecnico-xp#readme"
+  "homepage": "https://github.com/Douglas-marcal/desafio-tecnico-xp#readme",
+  "dependencies": {
+    "typescript": "^4.7.4"
+  }
 }
