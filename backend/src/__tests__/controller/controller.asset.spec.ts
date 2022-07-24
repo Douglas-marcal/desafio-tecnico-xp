@@ -58,6 +58,8 @@ describe('Tests asset routes', () => {
         .mockResolvedValue(registerAssetMock);
 
       it('should register an asset', (done) => {
+        const token = generateToken({ CodCliente: 1, email: 'test@test.com' });
+
         request(app)
           .post('/ativos/registrar')
           .send({
@@ -65,6 +67,7 @@ describe('Tests asset routes', () => {
             NomeAtivo: 'TEST',
             Valor: 6.97,
           })
+          .set('Authorization', token)
           .set('Accept', 'application/json')
           .expect(StatusCodes.CREATED)
           .then((response) => {
@@ -80,9 +83,12 @@ describe('Tests asset routes', () => {
         .spyOn(assetService, 'getByAssetCode')
         .mockResolvedValue(assetMock);
 
+      const token = generateToken({ CodCliente: 1, email: 'test@test.com' });
+
       it('should get an asset', (done) => {
         request(app)
           .get('/ativos/4')
+          .set('Authorization', token)
           .expect(StatusCodes.OK)
           .then((response) => {
             expect(response.body).toEqual(assetMock);
@@ -94,6 +100,7 @@ describe('Tests asset routes', () => {
       it('should get an asset', (done) => {
         request(app)
           .get('/ativos/string')
+          .set('Authorization', token)
           .expect(StatusCodes.NOT_FOUND)
           .then((response) => {
             expect(response.body).toHaveProperty('message', 'Rota não encontrada.');

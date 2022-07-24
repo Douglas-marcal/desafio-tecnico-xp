@@ -7,8 +7,8 @@ const router = Router();
 
 router.get('/', validateToken, assetController.getAllAssets);
 
-router.post('/registrar', validateNewAssetFields, assetController.registerAsset);
+router.post('/registrar', validateToken, validateNewAssetFields, assetController.registerAsset);
 
-router.get('/:codAtivo', assetController.getByAssetCode);
+router.get('/:codAtivo', validateToken, assetController.getByAssetCode);
 
 export default router;
