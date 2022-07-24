@@ -56,7 +56,7 @@ Os momentos mais desafiadores foram implementar o Docker na aplicação, realiza
 
 <details>
 
-<summary>Sem docker</summary>
+<summary><strong>Sem Docker</strong></summary>
 
 <h4>Pré-requistos:</h4>
 
@@ -87,7 +87,7 @@ Para subir um servidor Node:
 
 <details>
 
-<summary>Com Docker</summary>
+<summary><strong>Com Docker</strong></summary>
 
 <h4>Pré-requistos:</h4>
 
@@ -130,20 +130,37 @@ Neste exemplo a porta 3333 será utilizada
 
 ![image](https://user-images.githubusercontent.com/86581370/180658264-8a87b03b-faee-4eb5-8a17-ad0e2773063b.png)
 
+<br />
 
 ### Para registrar um cliente utilize o Endpoint `POST` `/conta/registrar`
 
-- É necessário enviar um JSON no formato:
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
+
+  - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180658229-f6c9d3cf-20f5-4a16-a149-dcae0ee82f23.png" /></p>
 
+</details>
+
+<br />
+
 ### Para realizar o login utilize o Endpoint `POST` `/conta/entrar`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 Para fazer o login é necessário informar o email e senha cadastrados no Endpoint de registro.
 
 - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180658443-540fa7e2-353a-4883-8849-c426f55cbd2e.png" /></p>
+
+</details>
+
+<br />
 
 #### :warning: Para realizar as próximas requisições será preciso informar o token recebido no Endpoint de login para fazer a autenticação.
 
@@ -153,51 +170,120 @@ Para fazer o login é necessário informar o email e senha cadastrados no Endpoi
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659293-4f74ad4a-a427-43ff-8e3d-0cf88c756edc.png" /></p>
 
+<br />
 
 ### Para realizar um depósito utilize o Endpoint `POST` `/conta/deposito`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659246-f7090436-677d-4a3a-94af-2015ba55c557.png" /></p>
 
+</details>
+
+<br />
+
 ### Para realizar um saque utilize o Endpoint `POST` `/conta/saque`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659540-20b98d51-43ca-470a-b79d-5d0dc3177f4c.png" /></p>
 
+</details>
+
+<br />
+
 ### Para realizar um saque utilize o Endpoint `GET` `/conta/saldo`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659700-ba812a72-083d-41c6-9760-6eeaae07f7f4.png" /></p>
 
+</details>
+
+<br />
+
 ### Para consultar todos os ativos que o cliente possui utilize o Endpoint `GET` `/conta/ativos`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660611-a13e0544-f3ce-44bf-9d60-b19399ee4bdf.png" /></p>
 
+</details>
+
+<br />
 
 ### Para consultar a lista de todos os ativos utilize o Endpoint `GET` `/ativos`
 
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
+
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659948-84dec90b-0eb5-4113-98ef-4ca2a4258376.png" /></p>
+
+</details>
+
+<br />
 
 ### Para consultar um único ativo utilize o Endpoint `GET` `/ativos/:CodAtivo`
 
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
+
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660147-bdabbc74-8912-47ba-9d82-9920761360ad.png" /></p>
 
+</details>
+
+<br />
+
 ### Para registrar um novo ativo utilize o Endpoint `POST` `/ativos/registrar`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660221-9fdb5729-ffc7-4397-8349-169ad1b891af.png" /></p>
 
+</details>
+
+<br />
+
 ### Para comprar um ativo utilize o Endpoint `POST` `/investimentos/comprar`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660369-4d8cabae-07ea-4a85-b463-6737e3585bcb.png" /></p>
 
+</details>
+
+<br />
+
 ### Para vender um ativo utilize o Endpoint `POST` `/investimentos/vender`
+
+<details>
+
+<summary>Para mais detalhes clique aqui</summary><br />
 
 - É necessário enviar um JSON no formato:
 
 <p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660495-70e5a873-0917-4682-bcba-b1fa2e8b0fb3.png" /></p>
 
+</details>
