@@ -92,7 +92,7 @@ Pelo terminal, clone este repositório com o comando:
 
 - `git clone git@github.com:Douglas-marcal/desafio-tecnico-xp.git`
 
-Entre no diretório `desafio-xp` e logo em seguida no diretório `backend`:
+Entre no diretório `desafio-tecnico-xp` e logo em seguida no diretório `backend`:
 
 - `cd desafio-tecnico-xp/backend`
 
@@ -123,7 +123,7 @@ Pelo terminal, clone este repositório com o comando:
 
 - `git clone git@github.com:Douglas-marcal/desafio-tecnico-xp.git`
 
-Entre no diretório `desafio-xp` e logo em seguida no diretório `backend`:
+Entre no diretório `desafio-tecnico-xp` e logo em seguida no diretório `backend`:
 
 - `cd desafio-tecnico-xp/backend`
 
