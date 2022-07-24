@@ -92,6 +92,7 @@ Para subir um servidor Node:
 <h4>Pré-requistos:</h4>
 
 - Docker
+- Docker Compose
 
 Pelo terminal, clone este repositório com o comando:
 
@@ -109,7 +110,7 @@ Acesse o terminal do container com o comando:
 
 - `docker exec -it desafio_tecnico_xp bash`
 
-Dentro do container instale as dependências:
+Dentro do container, instale as dependências:
 
 - `npm install`
 
@@ -122,4 +123,81 @@ Para subir um servidor Node:
 - `npm run dev`
 
 </details>
+
+#### Com o servidor rodando, para usar a aplicação você precisará do [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/) para fazer requisições HTTP
+
+Neste exemplo a porta 3333 será utilizada
+
+![image](https://user-images.githubusercontent.com/86581370/180658264-8a87b03b-faee-4eb5-8a17-ad0e2773063b.png)
+
+
+### Para registrar um cliente utilize o Endpoint `POST` `/conta/registrar`
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180658229-f6c9d3cf-20f5-4a16-a149-dcae0ee82f23.png" /></p>
+
+### Para realizar o login utilize o Endpoint `POST` `/conta/entrar`
+
+Para fazer o login é necessário informar o email e senha cadastrados no Endpoint de registro.
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180658443-540fa7e2-353a-4883-8849-c426f55cbd2e.png" /></p>
+
+#### :warning: Para realizar as próximas requisições será preciso informar o token recebido no Endpoint de login para fazer a autenticação.
+
+#### Pré-requisito para as próximas requisições:
+
+- Adicionar no `header` a chave `Authorization` com o valor do token recebido ao efetuar o login
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659293-4f74ad4a-a427-43ff-8e3d-0cf88c756edc.png" /></p>
+
+
+### Para realizar um depósito utilize o Endpoint `POST` `/conta/deposito`
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659246-f7090436-677d-4a3a-94af-2015ba55c557.png" /></p>
+
+### Para realizar um saque utilize o Endpoint `POST` `/conta/saque`
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659540-20b98d51-43ca-470a-b79d-5d0dc3177f4c.png" /></p>
+
+### Para realizar um saque utilize o Endpoint `GET` `/conta/saldo`
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659700-ba812a72-083d-41c6-9760-6eeaae07f7f4.png" /></p>
+
+### Para consultar todos os ativos que o cliente possui utilize o Endpoint `GET` `/conta/ativos`
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660611-a13e0544-f3ce-44bf-9d60-b19399ee4bdf.png" /></p>
+
+
+### Para consultar a lista de todos os ativos utilize o Endpoint `GET` `/ativos`
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180659948-84dec90b-0eb5-4113-98ef-4ca2a4258376.png" /></p>
+
+### Para consultar um único ativo utilize o Endpoint `GET` `/ativos/:CodAtivo`
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660147-bdabbc74-8912-47ba-9d82-9920761360ad.png" /></p>
+
+### Para registrar um novo ativo utilize o Endpoint `POST` `/ativos/registrar`
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660221-9fdb5729-ffc7-4397-8349-169ad1b891af.png" /></p>
+
+### Para comprar um ativo utilize o Endpoint `POST` `/investimentos/comprar`
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660369-4d8cabae-07ea-4a85-b463-6737e3585bcb.png" /></p>
+
+### Para vender um ativo utilize o Endpoint `POST` `/investimentos/vender`
+
+- É necessário enviar um JSON no formato:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/86581370/180660495-70e5a873-0917-4682-bcba-b1fa2e8b0fb3.png" /></p>
 
