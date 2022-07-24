@@ -92,6 +92,7 @@ Para subir um servidor Node:
 <h4>Pré-requistos:</h4>
 
 - Docker
+- Docker Compose
 
 Pelo terminal, clone este repositório com o comando:
 
