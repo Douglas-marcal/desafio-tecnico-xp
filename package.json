@@ -6,7 +6,7 @@
   "scripts": {
     "heroku-prebuild": "cd backend && npm install",
     "start": "cd backend && npm start",
-    "postinstall": "cd backend && npm run build"
+    "heroku-cleanup": "cd backend && npm run build"
   },
   "repository": {
     "type": "git",
