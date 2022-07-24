@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "heroku-prebuild": "cd backend",
-    "start": "cd backend && npm start"
+    "start": "node backend/dist/server.js",
+    "postinstall": "cd backend && npm run build"
   },
   "repository": {
     "type": "git",
