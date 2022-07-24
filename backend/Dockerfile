@@ -10,6 +10,10 @@ RUN npm install
 
 COPY . .
 
+RUN yarn migrate:deploy && tsc
+
+RUN prisma migrate deploy
+
 ENTRYPOINT [ "npm" ]
 
 CMD [ "run", "start" ]
