@@ -9,3 +9,7 @@ COPY prisma ./prisma/
 RUN npm install
 
 COPY . ./app
+
+ENTRYPOINT [ "npm" ]
+
+CMD [ "start" ]
