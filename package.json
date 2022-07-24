@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-prebuild": "cd backend && npm install && npm run build",
-    "start": "node dist/server.js"
+    "heroku-prebuild": "cd backend"
   },
   "repository": {
     "type": "git",

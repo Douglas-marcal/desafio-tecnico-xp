@@ -7,7 +7,6 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
-    "heroku-prebuild": "cd backend && npm install && npm run build",
     "test": "jest -i --runInBand",
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
