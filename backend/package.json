@@ -10,7 +10,7 @@
     "test": "jest -i --runInBand",
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
-    "postinstall": "tsc"
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "Douglas Marçal",
