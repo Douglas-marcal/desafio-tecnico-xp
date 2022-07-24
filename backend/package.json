@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest -i --runInBand",
     "dev": "nodemon src/server.ts",
-    "start": "node dist/server.js",
+    "start": "npm run build && node dist/server.js",
     "build": "npx tsc"
   },
   "keywords": [],
