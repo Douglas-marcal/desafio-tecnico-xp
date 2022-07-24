@@ -229,7 +229,7 @@ Para fazer o login é necessário informar o email e senha cadastrados no Endpoi
 
 <br />
 
-### Para realizar um saque utilize o Endpoint `GET` `/conta/saldo`
+### Para consultar o saldo da conta utilize o Endpoint `GET` `/conta/saldo`
 
 <details>
 
